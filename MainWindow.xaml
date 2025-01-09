@@ -3,10 +3,70 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LibraryManagementSystem"
+        xmlns:local="clr-namespace:LibraryManagementSystem.Components"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="780" Width="1280" AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen"
+        Background="Transparent">
 
-    </Grid>
+    <Border CornerRadius="25" Padding="20" Background="#f7f6f4" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+        <Grid>
+            <!-- Define Columns -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="260"/>
+                <!-- Fixed-width for the menu -->
+                <ColumnDefinition Width="*"/>
+                <!-- Flexible width for main content -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Define Rows -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <!-- Fixed height for the header -->
+                <RowDefinition Height="*"/>
+                <!-- Flexible height for the main content -->
+            </Grid.RowDefinitions>
+
+            <!-- Menu (Left Side) -->
+            <Border Grid.Column="0" Grid.RowSpan="2" CornerRadius="10">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#fb7154" Offset="0" />
+                        <GradientStop Color="#fb7154" Offset="0.8" />
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <!-- ListBox for NavButton items -->
+                <ListBox x:Name="sidebar" SelectionMode="Single" SelectionChanged="sidebar_SelectionChanged" Margin="10,50,10,50" BorderThickness="0" Background="Transparent">
+                    <!-- Example NavButton entries -->
+                    <local:NavButton Margin="3" Padding="16" Icon="M 0,0 L 10,0 L 10,10 L 0,10 Z" Navitem="Home"/>
+                    <local:NavButton Margin="3" Padding="16" Icon="M 0,0 L 10,0 L 10,10 L 0,10 Z" Navitem="Library"/>
+                    <local:NavButton Margin="3" Padding="16" Icon="M 0,0 L 10,0 L 10,10 L 0,10 Z" Navitem="Settings"/>
+                </ListBox>
+            </Border>
+
+
+            <!-- Header -->
+            <Border Grid.Column="1" Grid.Row="0" CornerRadius="10" Margin="20,0,0,20">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#fb7154" Offset="0" />
+                        <GradientStop Color="#fb7154" Offset="0.8" />
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <!-- Main Content -->
+            <Border Grid.Column="1" Grid.Row="1" CornerRadius="10" Margin="20,0,0,0">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#fb7154" Offset="0" />
+                        <GradientStop Color="#fb7154" Offset="0.8" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Frame x:Name="navframe" NavigationUIVisibility="Hidden">
+                    <!-- Frame content goes here -->
+                </Frame>
+            </Border>
+        </Grid>
+    </Border>
 </Window>
