@@ -13,26 +13,57 @@
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
                             <!-- Icon part -->
-                            <Path x:Name="icon" Height="25" Width="25" Stretch="Uniform" Data="{TemplateBinding Icon}" Fill="Black" VerticalAlignment="Center" Margin="5,0,10,0"/>
+                            <Path x:Name="icon" Height="25" Width="25" Stretch="Uniform" Data="{TemplateBinding Icon}" Fill="white" VerticalAlignment="Center" Margin="5,0,10,0"/>
 
                             <!-- Navitem text part -->
-                            <TextBlock Text="{TemplateBinding Navitem}" VerticalAlignment="Center" FontWeight="Bold" FontSize="15" />
+                            <TextBlock x:Name="navitem" Text="{TemplateBinding Navitem}" VerticalAlignment="Center" FontWeight="Bold" FontSize="15" Foreground="white"/>
                         </StackPanel>
                     </Border>
 
                     <!-- Triggers for mouse over and selection -->
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" TargetName="back" Value="#d0ebff"/>
-                            <Setter Property="Fill" TargetName="icon" Value="#2484f1"/>
+                            <Setter Property="Background" TargetName="back" Value="white"/>
+                            <Setter Property="Fill" TargetName="icon" Value="#fb7154"/>
+                            <Setter Property="Foreground" TargetName="navitem" Value="#fb7154"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" TargetName="back" Value="#d0ebff"/>
-                            <Setter Property="Fill" TargetName="icon" Value="#2484f1"/>
+                            <Setter Property="Background" TargetName="back" Value="white"/>
+                            <Setter Property="Fill" TargetName="icon" Value="#fb7154"/>
+                            <Setter Property="Foreground" TargetName="navitem" Value="#fb7154"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type local:InfoCard}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:InfoCard}">
+                    <Border Margin="10" Background="{TemplateBinding BackgroundCustom}"  Padding="20" CornerRadius="10" BorderBrush="#DDD" BorderThickness="1">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Image Section -->
+                            <Image Source="{TemplateBinding ImageSource}" Width="60" Height="60" Margin="0 0 15 0" VerticalAlignment="Center"  />
+
+                            <!-- Title and Subtitle Section -->
+                            <StackPanel VerticalAlignment="Center"  Height="60">
+                                <!-- Title Section -->
+                                <TextBlock Text="{TemplateBinding Title}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Foreground="#333" />
+
+                                <!-- Subtitle Section -->
+                                <TextBlock Text="{TemplateBinding Subtitle}" FontSize="16" VerticalAlignment="Center" Foreground="#666" Margin="0 0 0 12" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+
+
 </ResourceDictionary>

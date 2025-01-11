@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:LibraryManagementSystem"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="Themes/Generic.xaml"/>
+      
+        
+        
     </Application.Resources>
 </Application>
