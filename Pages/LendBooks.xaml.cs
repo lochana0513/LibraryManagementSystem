@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace LibraryManagementSystem.Pages
 {
     /// <summary>
-    /// Interaction logic for Books.xaml
+    /// Interaction logic for LendBooks.xaml
     /// </summary>
-    public partial class Books : Page
+    public partial class LendBooks : Page
     {
-        public Books()
+        public LendBooks()
         {
             InitializeComponent();
         }

@@ -18,14 +18,14 @@ using Microsoft.Extensions.DependencyInjection;
 namespace LibraryManagementSystem.Pages
 {
     /// <summary>
-    /// Interaction logic for Members.xaml
+    /// Interaction logic for Books.xaml
     /// </summary>
-    public partial class Members : Page
+    public partial class Books : Page
     {
-        public Members()
+        public Books()
         {
             InitializeComponent();
-            this.DataContext = App.ServiceProvider.GetRequiredService<MemberViewModel>();
+            this.DataContext = App.ServiceProvider.GetRequiredService<BookViewModel>();
         }
     }
 }

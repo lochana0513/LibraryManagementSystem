@@ -3,12 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.Entity;
+using LibraryManagementSystem.Pages;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem.Models
 {
-    class LibraryDbContext : DbContext
+    public class LibraryDbContext : DbContext
     {
-        public LibraryDbContext() : base("name=LibraryDBConnectionString") { }
+        public DbSet<Book> Book { get; set; }
+        public DbSet<Member> Member { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Genre> Genre { get; set; }
+        public DbSet<BorrowingTransaction> BorrowingTransaction { get; set; }
+        public DbSet<TransactionBook> TransactionBook { get; set; }
+
+        public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
+        {
+        }
+
+        public void ApplyMigrations() { Database.Migrate(); }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configure composite primary key for TransactionBook
+            modelBuilder.Entity<TransactionBook>()
+                .HasKey(tb => new { tb.TransactionID, tb.BookID });
+
+            // Additional configurations (if any) for other entities can go here
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

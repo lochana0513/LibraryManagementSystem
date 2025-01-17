@@ -1,4 +1,4 @@
-﻿<Page x:Class="LibraryManagementSystem.Pages.Books"
+﻿<Page x:Class="LibraryManagementSystem.Pages.ReturnBooks"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:LibraryManagementSystem.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Books">
+      Title="ReturnBooks">
 
     <Grid>
         <!-- Define Columns -->
@@ -26,39 +26,31 @@
         </Grid.RowDefinitions>
 
         <!-- Title Section -->
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Books Management" 
-                   FontSize="24" FontWeight="Bold" VerticalAlignment="Center"
-                   Margin="10,5,0,0"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Return Books" 
+                FontSize="24" FontWeight="Bold" VerticalAlignment="Center"
+                Margin="10,5,0,0"/>
 
         <!-- Add Book Button -->
-        <Border Grid.Row="0" Grid.Column="1" Width="160" Height="45" Margin="10"
-                        HorizontalAlignment="Right" VerticalAlignment="Center"
-                        Background="#ff5733" CornerRadius="10" BorderBrush="White" BorderThickness="1">
-            <TextBlock Text="Add Book" Foreground="White" FontSize="14" FontWeight="Bold"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Border.InputBindings>
 
-            </Border.InputBindings>
-        </Border>
 
         <!-- Search Bar -->
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal"
-            HorizontalAlignment="Right" VerticalAlignment="Center"
-            Margin="0,0,10,0">
+         HorizontalAlignment="Right" VerticalAlignment="Center"
+         Margin="0,0,10,0">
             <!-- Modern Search Bar -->
             <Border CornerRadius="7" BorderThickness="1" BorderBrush="Gray" 
-            Background="White" Width="320" Height="40">
+         Background="White" Width="320" Height="40">
                 <Grid>
                     <!-- Search Icon -->
                     <Image Source="E:\LibraryManagementSystem\Assets\magnifying-glass.png" 
-                   Width="16" Height="16"
-                   HorizontalAlignment="Left" Margin="10,0"
-                   VerticalAlignment="Center"/>
+                Width="16" Height="16"
+                HorizontalAlignment="Left" Margin="10,0"
+                VerticalAlignment="Center"/>
 
                     <!-- TextBox -->
                     <TextBox Margin="35,0,10,0" Background="Transparent" 
-                     BorderThickness="0" VerticalAlignment="Center" 
-                     FontSize="14"  />
+                  BorderThickness="0" VerticalAlignment="Center" 
+                  FontSize="14"  />
                 </Grid>
             </Border>
         </StackPanel>
@@ -66,20 +58,18 @@
 
         <!-- Books Table -->
         <DataGrid Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="False" 
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Margin="10" IsReadOnly="True">
+               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+               Margin="10" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Book Name"  Width="*"/>
-                <DataGridTextColumn Header="Author"  Width="*"/>
-                <DataGridTextColumn Header="ISBN"  Width="*"/>
-                <DataGridTextColumn Header="Genre"  Width="*"/>
-                <DataGridTextColumn Header="Availability"  Width="*"/>
+                <DataGridTextColumn Header="TransactionID"  Width="*"/>
+                <DataGridTextColumn Header="MemberID"  Width="*"/>
+                <DataGridTextColumn Header="BorrowDate"  Width="*"/>
+                <DataGridTextColumn Header="DueDate"  Width="*"/>
                 <DataGridTemplateColumn Header="Actions" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Content="Edit" Margin="5,0" Width="60" />
-                                <Button Content="Delete" Margin="5,0" Width="60" />
+                                <Button Content="Return" Margin="5,0" Width="60" />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

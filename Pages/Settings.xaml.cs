@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LibraryManagementSystem.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LibraryManagementSystem.Pages
 {
@@ -23,6 +25,8 @@ namespace LibraryManagementSystem.Pages
         public Settings()
         {
             InitializeComponent();
+            this.DataContext = App.ServiceProvider.GetRequiredService<GenreViewModel>();
+
         }
     }
 }

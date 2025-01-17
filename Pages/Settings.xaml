@@ -3,11 +3,17 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:LibraryManagementSystem.Pages"
+      xmlns:vm="clr-namespace:LibraryManagementSystem.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800" 
       Title="Settings"
       >
+
+
+    <Page.DataContext>
+        <vm:GenreViewModel />
+    </Page.DataContext>
+
 
     <Page.Resources>
         <Style x:Key="TabItemStyle" TargetType="TabItem">
@@ -65,6 +71,47 @@
 
         <Style x:Key="TabControlStyle" TargetType="TabControl">
             <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
+
+        <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+
+        <!-- Primary Button Style -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#0078D7" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="10,5" />
+
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+
+        </Style>
+
+        <!-- Secondary Button Style -->
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#E5E5E5" />
+            <Setter Property="Foreground" Value="#333333" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="Padding" Value="10,5" />
+
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#CCCCCC" />
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+
         </Style>
 
 
@@ -133,19 +180,18 @@
 
 
                         <!-- Books Table -->
-                        <DataGrid Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="False" 
+                        <DataGrid Grid.Row="2" ItemsSource="{Binding Genre}" SelectedItem="{Binding SelectedGenre}"  Grid.ColumnSpan="3" AutoGenerateColumns="False" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Margin="10" IsReadOnly="True">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Genre ID"  Width="*"/>
-                                <DataGridTextColumn Header="Genre"  Width="*"/>
-                                <DataGridTextColumn Header="Books"  Width="*"/>
+                                <DataGridTextColumn Header="Genre" Binding="{Binding GenreID}"  Width="*"/>
+                                <DataGridTextColumn Header="Books" Binding="{Binding GenreName}"  Width="*"/>
                                 <DataGridTemplateColumn Header="Actions" Width="150">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                                <Button Content="Edit" Margin="5,0" Width="60" />
-                                                <Button Content="Delete" Margin="5,0" Width="60" />
+                                                <Button Content="Edit" Margin="5,0" Width="60" Command="{Binding DataContext.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                              
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -156,18 +202,128 @@
                 </Border>
             </TabItem>
 
+<!-- Profile Tab -->
             <!-- Profile Tab -->
             <TabItem Header="Profile" Style="{DynamicResource TabItemStyle}" BorderBrush="#DDD" BorderThickness="1">
                 <Border BorderBrush="#DDD" BorderThickness="1" CornerRadius="10">
-                    <Grid>
-                        <TextBlock Text="Profile Settings" FontSize="16" 
-                           HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Black"
-                           Margin="0,20,0,0"/>
-                        <!-- Add Profile Settings UI here -->
+                    <Grid Margin="20">
+                        <!-- Define Rows and Columns -->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <!-- Header -->
+                            <RowDefinition Height="Auto"/>
+                            <!-- Content -->
+                            <RowDefinition Height="Auto"/>
+                            <!-- Buttons -->
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <!-- Stretch content -->
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Header -->
+                        <TextBlock Text="Profile Settings" FontSize="20" FontWeight="Bold"
+                       HorizontalAlignment="Center" Foreground="Black"
+                       Grid.Row="0" Margin="0,20,0,10"/>
+
+                        <!-- Content Section -->
+                        <Grid Grid.Row="1" Margin="0,10,0,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- First Row -->
+                                <RowDefinition Height="Auto"/>
+                                
+                                <!-- Second Row -->
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <!-- Label and Input 1 -->
+                                <ColumnDefinition Width="1*"/>
+                                <!-- Label and Input 2 -->
+                            </Grid.ColumnDefinitions>
+
+                            <!-- First Name -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
+                                <TextBlock Text="First Name" Foreground="Gray" FontSize="14"/>
+                                <TextBox Name="FirstNameTextBox" Style="{StaticResource ModernTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <!-- Last Name -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="10">
+                                <TextBlock Text="Last Name" Foreground="Gray" FontSize="14"/>
+                                <TextBox Name="LastNameTextBox" Style="{StaticResource ModernTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <!-- Phone Number -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
+                                <TextBlock Text="Phone Number" Foreground="Gray" FontSize="14"/>
+                                <TextBox Name="PhoneNumberTextBox" InputScope="TelephoneNumber" Style="{StaticResource ModernTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <!-- User Type -->
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
+                                <TextBlock Text="NIC Number" Foreground="Gray" FontSize="14"/>
+                                <TextBox Name="NICTextBox" InputScope="TelephoneNumber" Style="{StaticResource ModernTextBoxStyle}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Buttons -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
+                        Grid.Row="2" Margin="0,20,0,0">
+                            <!-- Add Book Button -->
+                            <Border Grid.Row="0" Grid.Column="1" Width="160" Height="45" Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Background="#ff5733" CornerRadius="10" BorderBrush="White" BorderThickness="1">
+                                <TextBlock Text="Save" Foreground="White" FontSize="14" FontWeight="Bold"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Border.InputBindings>
+
+                                </Border.InputBindings>
+                            </Border>
+                           
+                        </StackPanel>
                     </Grid>
                 </Border>
             </TabItem>
+
+
         </TabControl>
+
+        <Popup IsOpen="{Binding IsPopupOpen}" Placement="Center" StaysOpen="True" DataContext="{Binding}">
+            <Border Background="White" Padding="20" CornerRadius="10" Width="400" Height="300" >
+                <Grid>
+                    <!-- Close Icon -->
+                    <Button Content="✖" 
+                    Command="{Binding ClosePopupCommand}" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top" 
+                    Background="Transparent" 
+                    BorderBrush="Transparent" 
+                    Foreground="Gray"
+                    FontSize="14"
+                    Width="30" Height="30"
+                    ToolTip="Close"
+                    Margin="5,5,0,0"/>
+
+                    <!-- Main Content -->
+                    <StackPanel Margin="0,30,0,0">
+                        <TextBlock Text="Edit Book" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" TextAlignment="Center" />
+                        <TextBox Text="{Binding SelectedGenre.GenreID}" Margin="0,5"  />
+                        <TextBox Text="{Binding SelectedGenre.GenreName}" Margin="0,5"  />
+    
+
+
+
+
+                        <!-- Buttons -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                            <Button Content="Save" Command="{Binding SaveCommand}" Margin="5,0" Style="{StaticResource PrimaryButtonStyle}"/>
+                            <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5,0" Style="{StaticResource SecondaryButtonStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Popup>
 
     </Grid>
 </Page>

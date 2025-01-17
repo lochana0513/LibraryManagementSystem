@@ -12,20 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using LibraryManagementSystem.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace LibraryManagementSystem.Pages
 {
     /// <summary>
-    /// Interaction logic for Members.xaml
+    /// Interaction logic for ReturnBooks.xaml
     /// </summary>
-    public partial class Members : Page
+    public partial class ReturnBooks : Page
     {
-        public Members()
+        public ReturnBooks()
         {
             InitializeComponent();
-            this.DataContext = App.ServiceProvider.GetRequiredService<MemberViewModel>();
         }
     }
 }
