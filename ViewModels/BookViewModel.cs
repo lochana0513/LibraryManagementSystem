@@ -18,7 +18,9 @@ namespace LibraryManagementSystem.ViewModels
     public class BookViewModel : ViewModelBase
     {
         private readonly IBookService _bookService;
+        private readonly IGenreService _genreService;
         private ObservableCollection<Book> _books;
+        private ObservableCollection<Genre> _genres;
         private Book _selectedBook;
         private Book _newBook;
 
@@ -48,6 +50,12 @@ namespace LibraryManagementSystem.ViewModels
                     InitializeFilteredBooks();
                 }
             }
+        }
+
+        public ObservableCollection<Genre> Genre
+        {
+            get => _genres;
+            set => SetProperty(ref _genres, value);
         }
 
         public ICollectionView FilteredBooks
@@ -116,11 +124,13 @@ namespace LibraryManagementSystem.ViewModels
             // Initialize default values or set up services here
             // For example, you could initialize the Books collection to an empty ObservableCollection:
             Book = new ObservableCollection<Book>();
-           
+            Genre = new ObservableCollection<Genre>();
+
         }
-        public BookViewModel(IBookService bookService)
+        public BookViewModel(IBookService bookService, IGenreService genreService)
         {
             _bookService = bookService;
+            _genreService = genreService;
 
             OpenAddPopupCommand = new RelayCommand(parameter => OpenAddPopup());
             OpenEditPopupCommand = new RelayCommand(parameter => OpenEditPopup(), CanExecuteEditPopup);
@@ -131,17 +141,20 @@ namespace LibraryManagementSystem.ViewModels
             DeleteBookCommand = new RelayCommand(async parameter => await DeleteBook(parameter), CanExecuteDeleteBook);
 
             LoadBooks();
+            
         }
 
         private void OpenAddPopup()
         {
             NewBook = new Book(); // Initialize a new book
+            LoadGenres();
             IsAddPopupOpen = true;
         }
 
         private void OpenEditPopup()
         {
             IsEditPopupOpen = true;
+            LoadGenres();
         }
 
         private bool CanExecuteEditPopup(object parameter)
@@ -167,6 +180,20 @@ namespace LibraryManagementSystem.ViewModels
                 Console.WriteLine($"Error loading books: {ex.Message}");
             }
         }
+
+        private async Task LoadGenres()
+        {
+            try
+            {
+                var genresFromDb = await _genreService.GetAllGenre();
+                Genre = new ObservableCollection<Genre>(genresFromDb);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading genres: {ex.Message}");
+            }
+        }
+
 
         private void InitializeFilteredBooks()
         {

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 using LibraryManagementSystem.Commands;
 using LibraryManagementSystem.Models;
@@ -17,11 +19,19 @@ namespace LibraryManagementSystem.ViewModels
         private readonly IGenreService _genreService;
         private ObservableCollection<Genre> _genre;
         private Genre _selectedgenre;
+        private Genre _newGenre;
 
-        public ObservableCollection<Genre> Genre
+        private string _searchTerm;
+        private ICollectionView _filteredGenre;
+
+        public Genre NewGenre
         {
-            get => _genre;
-            set => SetProperty(ref _genre, value);
+            get => _newGenre;
+            set
+            {
+                SetProperty(ref _newGenre, value);
+                ((RelayCommand)AddGenreCommand).RaiseCanExecuteChanged();
+            }
         }
 
         public Genre SelectedGenre
@@ -30,15 +40,58 @@ namespace LibraryManagementSystem.ViewModels
             set => SetProperty(ref _selectedgenre, value);
         }
 
-        private bool _isPopupOpen;
-        public bool IsPopupOpen
+        public ObservableCollection<Genre> Genre
         {
-            get => _isPopupOpen;
-            set => SetProperty(ref _isPopupOpen, value); // Ensure this notifies the UI
+            get => _genre;
+            set
+            {
+                if (SetProperty(ref _genre, value))
+                {
+                    // Refresh the filtered view when books collection changes
+                    InitializeFilteredGenre();
+                }
+            }
         }
 
 
-        public ICommand OpenPopupCommand { get; }
+        public ICollectionView FilteredGenre
+        {
+            get => _filteredGenre;
+            private set => SetProperty(ref _filteredGenre, value);
+        }
+
+        public string SearchTerm
+        {
+            get => _searchTerm;
+            set
+            {
+                if (SetProperty(ref _searchTerm, value))
+                {
+                    FilteredGenre.Refresh();
+                }
+            }
+        }
+
+
+
+        private bool _isAddPopupOpen;
+        public bool IsAddPopupOpen
+        {
+            get => _isAddPopupOpen;
+            set => SetProperty(ref _isAddPopupOpen, value);
+        }
+
+        private bool _isEditPopupOpen;
+        public bool IsEditPopupOpen
+        {
+            get => _isEditPopupOpen;
+            set => SetProperty(ref _isEditPopupOpen, value);
+        }
+
+
+
+        public ICommand OpenAddPopupCommand { get; }
+        public ICommand OpenEditPopupCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
         public ICommand ClosePopupCommand { get; }
@@ -56,10 +109,11 @@ namespace LibraryManagementSystem.ViewModels
             _genreService = genreService;
             Genre = new ObservableCollection<Genre>();
 
-            OpenPopupCommand = new RelayCommand(parameter => OpenPopup(), null);
-            SaveCommand = new RelayCommand(parameter => Save(), CanSave);
-            CancelCommand = new RelayCommand(parameter => Cancel(), null);
-            ClosePopupCommand = new RelayCommand(parameter => ClosePopup(), null);
+
+            OpenAddPopupCommand = new RelayCommand(parameter => OpenAddPopup());
+            OpenEditPopupCommand = new RelayCommand(parameter => OpenEditPopup(), CanExecuteEditPopup);
+            CancelCommand = new RelayCommand(parameter => CloseAllPopups());
+            ClosePopupCommand = new RelayCommand(parameter => CloseAllPopups());
             AddGenreCommand = new RelayCommand(async parameter => await AddGenre(parameter), CanExecuteAddGenre);
             UpdateGenreCommand = new RelayCommand(async parameter => await UpdateGenre(parameter), CanExecuteUpdateGenre);
             DeleteGenreCommand = new RelayCommand(async parameter => await DeleteGenre(parameter), CanExecuteDeleteGenre);
@@ -69,29 +123,26 @@ namespace LibraryManagementSystem.ViewModels
 
         }
 
-        private void OpenPopup()
+        private void OpenAddPopup()
         {
-            IsPopupOpen = true;
+            NewGenre = new Genre(); // Initialize a new book
+            IsAddPopupOpen = true;
         }
 
-        private void Save()
+        private void OpenEditPopup()
         {
-            IsPopupOpen = false;
+            IsEditPopupOpen = true;
         }
 
-        private bool CanSave(object parameter)
+        private bool CanExecuteEditPopup(object parameter)
         {
-            return SelectedGenre != null && !string.IsNullOrEmpty(SelectedGenre.GenreName);
+            return SelectedGenre != null;
         }
 
-        private void Cancel()
+        private void CloseAllPopups()
         {
-            IsPopupOpen = false;
-        }
-
-        private void ClosePopup()
-        {
-            IsPopupOpen = false;
+            IsAddPopupOpen = false;
+            IsEditPopupOpen = false;
         }
 
         private async Task LoadGenre()
@@ -107,16 +158,33 @@ namespace LibraryManagementSystem.ViewModels
             }
         }
 
+        private void InitializeFilteredGenre()
+        {
+            if (Genre != null)
+            {
+                FilteredGenre = CollectionViewSource.GetDefaultView(Genre);
+                FilteredGenre.Filter = FilterGenre;
+            }
+        }
+
+        private bool FilterGenre(object obj)
+        {
+            if (obj is Genre genre)
+            {
+                return string.IsNullOrWhiteSpace(SearchTerm) || genre.GenreName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase);
+            }
+            return false;
+        }
+
         // Updated AddGenre Method
         private async Task AddGenre(object param)
         {
-            if (SelectedGenre == null || string.IsNullOrEmpty(SelectedGenre.GenreName)) return;
+            if (NewGenre == null || string.IsNullOrEmpty(NewGenre.GenreName)) return;
 
             try
             {
-                await _genreService.AddGenre(SelectedGenre);
-                Genre.Add(SelectedGenre);
-                IsPopupOpen = false;
+                await _genreService.AddGenre(NewGenre);
+                Genre.Add(NewGenre);
                 Console.WriteLine("Genre added successfully.");
             }
             catch (ArgumentNullException ex)
@@ -135,6 +203,7 @@ namespace LibraryManagementSystem.ViewModels
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
+            IsAddPopupOpen = false;
         }
 
         private bool CanExecuteAddGenre(object param)
@@ -156,6 +225,7 @@ namespace LibraryManagementSystem.ViewModels
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
+            IsEditPopupOpen = false;  
         }
 
         // Can Update Genre be executed

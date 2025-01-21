@@ -10,6 +10,7 @@ using System.Windows.Input;
 using LibraryManagementSystem.Commands;
 using System.ComponentModel;
 using LibraryManagementSystem.Pages;
+using System.Windows.Data;
 
 namespace LibraryManagementSystem.ViewModels
 {
@@ -51,15 +52,41 @@ namespace LibraryManagementSystem.ViewModels
             set => SetProperty(ref _selectedMember, value);
         }
 
-        private bool _isPopupOpen;
-        public bool IsPopupOpen
+        public ICollectionView FilteredMembers
         {
-            get => _isPopupOpen;
-            set => SetProperty(ref _isPopupOpen, value); // Ensure this notifies the UI
+            get => _filteredMembers;
+            private set => SetProperty(ref _filteredMembers, value);
+        }
+
+        public string SearchTerm
+        {
+            get => _searchTerm;
+            set
+            {
+                if (SetProperty(ref _searchTerm, value))
+                {
+                    FilteredMembers.Refresh();
+                }
+            }
+        }
+
+        private bool _isAddPopupOpen;
+        public bool IsAddPopupOpen
+        {
+            get => _isAddPopupOpen;
+            set => SetProperty(ref _isAddPopupOpen, value);
+        }
+
+        private bool _isEditPopupOpen;
+        public bool IsEditPopupOpen
+        {
+            get => _isEditPopupOpen;
+            set => SetProperty(ref _isEditPopupOpen, value);
         }
 
 
-        public ICommand OpenPopupCommand { get; }
+        public ICommand OpenAddPopupCommand { get; }
+        public ICommand OpenEditPopupCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
         public ICommand ClosePopupCommand { get; }
@@ -77,10 +104,10 @@ namespace LibraryManagementSystem.ViewModels
         {
             _memberService = memberService;
 
-            OpenPopupCommand = new RelayCommand(parameter => OpenPopup(), null);
-            SaveCommand = new RelayCommand(parameter => Save(), CanSave);
-            CancelCommand = new RelayCommand(parameter => Cancel(), null);
-            ClosePopupCommand = new RelayCommand(parameter => ClosePopup(), null);
+            OpenAddPopupCommand = new RelayCommand(parameter => OpenAddPopup());
+            OpenEditPopupCommand = new RelayCommand(parameter => OpenEditPopup(), CanExecuteEditPopup);
+            CancelCommand = new RelayCommand(parameter => CloseAllPopups());
+            ClosePopupCommand = new RelayCommand(parameter => CloseAllPopups());
             AddMemberCommand = new RelayCommand(async parameter => await AddMember(parameter), CanExecuteAddMember);
             UpdateMemberCommand = new RelayCommand(async parameter => await UpdateMember(parameter), CanExecuteUpdateMember);
             DeleteMemberCommand = new RelayCommand(async parameter => await DeleteMember(parameter), CanExecuteDeleteMember);
@@ -88,30 +115,46 @@ namespace LibraryManagementSystem.ViewModels
             LoadMembers();
         }
 
-        private void OpenPopup()
+        private void OpenAddPopup()
         {
-            IsPopupOpen = true;
+            NewMember = new Member(); // Initialize a new book
+            IsAddPopupOpen = true;
         }
 
-        private void Save()
+        private void OpenEditPopup()
         {
-            IsPopupOpen = false;
+            IsEditPopupOpen = true;
         }
 
-        private bool CanSave(object parameter)
+        private bool CanExecuteEditPopup(object parameter)
         {
-            return SelectedMember != null && !string.IsNullOrEmpty(SelectedMember.Name);
+            return SelectedMember != null;
         }
 
-        private void Cancel()
+        private void CloseAllPopups()
         {
-            IsPopupOpen = false;
+            IsAddPopupOpen = false;
+            IsEditPopupOpen = false;
         }
 
-        private void ClosePopup()
+        private void InitializeFilteredMembers()
         {
-            IsPopupOpen = false;
+            if (Member != null)
+            {
+                FilteredMembers = CollectionViewSource.GetDefaultView(Member);
+                FilteredMembers.Filter = FilterMember;
+            }
         }
+
+        private bool FilterMember(object obj)
+        {
+            if (obj is Member member)
+            {
+                return string.IsNullOrWhiteSpace(SearchTerm) || member.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase);
+            }
+            return false;
+        }
+
 
         private async Task LoadMembers()
         {
@@ -128,13 +171,13 @@ namespace LibraryManagementSystem.ViewModels
 
         public async Task AddMember(object param)
         {
-            if (SelectedMember == null) return;
+            if (NewMember == null) return;
 
             try
             {
                 // Call the service to add the member
-                await _memberService.AddMember(SelectedMember);
-                Member.Add(SelectedMember);
+                await _memberService.AddMember(NewMember);
+                Member.Add(NewMember);
                 Console.WriteLine("Member added successfully.");
             }
             catch (ArgumentNullException ex)
@@ -157,11 +200,12 @@ namespace LibraryManagementSystem.ViewModels
                 Console.WriteLine($"Unexpected Error: {ex.Message}");
                 // Show a generic error message to the user
             }
+            IsAddPopupOpen = false;
         }
 
         private bool CanExecuteAddMember(object param)
         {
-            return SelectedMember != null && !string.IsNullOrEmpty(SelectedMember.Name);
+            return NewMember != null && !string.IsNullOrEmpty(NewMember.Name);
         }
 
         public async Task UpdateMember(object param)
@@ -176,6 +220,7 @@ namespace LibraryManagementSystem.ViewModels
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
+            IsEditPopupOpen = false;
         }
 
         private bool CanExecuteUpdateMember(object param)

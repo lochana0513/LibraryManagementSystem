@@ -27,6 +27,7 @@ namespace LibraryManagementSystem
             serviceCollection.AddSingleton<IBookService, BookService>(); // Register Book Service
             serviceCollection.AddSingleton<IMemberService, MemberService>(); // Register Member Service
             serviceCollection.AddSingleton<IGenreService, GenreService>(); // Register Member Service
+            serviceCollection.AddSingleton<ITransactionService, TransactionService>();
 
             // Register DbContext
             serviceCollection.AddDbContext<LibraryDbContext>(options =>
@@ -38,6 +39,7 @@ namespace LibraryManagementSystem
             serviceCollection.AddTransient<BookViewModel>();
             serviceCollection.AddTransient<MemberViewModel>();
             serviceCollection.AddTransient<GenreViewModel>();
+            serviceCollection.AddTransient<TransactionViewModel>();
 
 
             // Build the provider

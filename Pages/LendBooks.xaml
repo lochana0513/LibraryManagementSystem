@@ -4,9 +4,14 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:LibraryManagementSystem.Pages"
+      xmlns:vm="clr-namespace:LibraryManagementSystem.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LendBooks">
+
+    <Page.DataContext>
+        <vm:TransactionViewModel />
+    </Page.DataContext>
 
     <Grid>
         <!-- Define Columns -->
@@ -37,7 +42,7 @@
             <TextBlock Text="Lend Books" Foreground="White" FontSize="14" FontWeight="Bold"
                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Border.InputBindings>
-
+                <MouseBinding Gesture="LeftClick" Command="{Binding OpenAddPopupCommand}"  />
             </Border.InputBindings>
         </Border>
 
@@ -58,21 +63,21 @@
                     <!-- TextBox -->
                     <TextBox Margin="35,0,10,0" Background="Transparent" 
                   BorderThickness="0" VerticalAlignment="Center" 
-                  FontSize="14"  />
+                  FontSize="14" Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"  />
                 </Grid>
             </Border>
         </StackPanel>
 
 
         <!-- Books Table -->
-        <DataGrid Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="False" 
+        <DataGrid Grid.Row="2" ItemsSource="{Binding FilteredTransaction}" Grid.ColumnSpan="3" AutoGenerateColumns="False" 
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                Margin="10" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="TransactionID"  Width="*"/>
-                <DataGridTextColumn Header="MemberID"  Width="*"/>
-                <DataGridTextColumn Header="BorrowDate"  Width="*"/>
-                <DataGridTextColumn Header="DueDate"  Width="*"/>
+                <DataGridTextColumn Header="TransactionID" Binding="{Binding TransactionID}"  Width="*"/>
+                <DataGridTextColumn Header="MemberID" Binding="{Binding MemberID}"  Width="*"/>
+                <DataGridTextColumn Header="BorrowDate" Binding="{Binding BorrowDate}"  Width="*"/>
+                <DataGridTextColumn Header="DueDate" Binding="{Binding DueDate}"  Width="*"/>
                 <DataGridTemplateColumn Header="Actions" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -84,5 +89,95 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Popup IsOpen="{Binding IsAddPopupOpen}" Placement="Center" StaysOpen="True" DataContext="{Binding}">
+            <Border Background="White" Padding="20" CornerRadius="10" Width="450" Height="Auto" 
+            BorderBrush="LightGray" BorderThickness="1">
+                <Grid>
+                    <!-- Close Icon -->
+                    <Button Content="✖"
+                    Command="{Binding ClosePopupCommand}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Foreground="Gray"
+                    FontSize="16"
+                    Width="30" Height="30"
+                    ToolTip="Close"
+                    Margin="5,5,0,0" />
+
+                    <!-- Main Content -->
+                    <StackPanel Margin="10">
+                        <!-- Popup Title -->
+                        <TextBlock Text="Manage Transactions"
+                           FontWeight="Bold"
+                           FontSize="20"
+                           TextAlignment="Center"
+                           Margin="0,0,0,15" />
+
+                        <!-- Member Selection Dropdown -->
+                        <TextBlock Text="Select Member:" FontWeight="SemiBold" Margin="0,5" />
+                        <ComboBox ItemsSource="{Binding Member}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="MemberID" 
+                          IsEditable="True"
+                          SelectedValue="{Binding NewTransaction.MemberID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                       
+                          Margin="0,5" />
+
+                        <!-- Due Date Selector -->
+                        <TextBlock Text="Select Due Date:" FontWeight="SemiBold" Margin="10,5,0,5" />
+                        <DatePicker SelectedDate="{Binding NewTransaction.DueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+
+                        <!-- Book Selection Dropdown -->
+                        <TextBlock Text="Select Book:" FontWeight="SemiBold" Margin="10,5,0,5" />
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <ComboBox 
+                              ItemsSource="{Binding Book}" 
+                              DisplayMemberPath="Title"
+                              SelectedValuePath="BookID" 
+                                SelectedItem="{Binding SelectedBook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                              IsEditable="True" 
+                              Margin="0,5"
+                              Width="300" />
+                            <Button Content="Add"
+                            Command="{Binding AddBookCommand}"
+                            Margin="10,0,0,0" 
+                            Width="80" />
+
+                        </StackPanel>
+
+                        <!-- Selected Books Table -->
+                        <TextBlock Text="Selected Books:" FontWeight="SemiBold" Margin="10,15,0,5" />
+                        <DataGrid ItemsSource="{Binding SelectedBooks}" SelectedItem="{Binding SelectedBook, Mode=TwoWay}" AutoGenerateColumns="False" Margin="0,5">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Book Title" Binding="{Binding Title}" />
+                                <DataGridTextColumn Header="Author" Binding="{Binding Author}" />
+                                <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" />
+                                <DataGridTextColumn Header="Genre" Binding="{Binding GenreID}" />
+                                <DataGridTemplateColumn Header="Actions">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Delete" 
+                                            Command="{Binding DataContext.DeleteBookCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}">
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- Buttons -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                            <Button Content="Save Transaction" Command="{Binding AddTransactionCommand}" IsEnabled="{Binding AddTransactionCommand.CanExecute}" />
+                            <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Popup>
+
+        
     </Grid>
 </Page>

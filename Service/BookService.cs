@@ -12,6 +12,8 @@ namespace LibraryManagementSystem.Service
     public interface IBookService
     {
         Task<List<Book>> GetAllBooks();
+
+        Task<List<Book>> GetAllAvailableBooks();
         Task AddBook(Book book);
         Task UpdateBook(Book book);
         Task DeleteBook(int BookID);
@@ -28,8 +30,17 @@ namespace LibraryManagementSystem.Service
         // Get all books
         public async Task<List<Book>> GetAllBooks()
         {
-            return await Task.Run(() => _context.Book.ToList());
+            return await _context.Book.ToListAsync();
+
         }
+
+        public async Task<List<Book>> GetAllAvailableBooks()
+        {
+            return await _context.Book
+                .Where(b => b.Availability) // Filter books that are available
+                .ToListAsync();
+        }
+
 
         // Add a new book
         public async Task AddBook(Book book)

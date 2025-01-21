@@ -11,7 +11,7 @@ namespace LibraryManagementSystem.Service
     public interface ITransactionService
     {
         Task<List<BorrowingTransaction>> GetAllLendTransactions();
-        Task AddLendTransaction(BorrowingTransaction transaction);
+        Task AddLendTransaction(BorrowingTransaction transaction, List<TransactionBook> transactionBooks);
         Task UpdateLendTransaction(BorrowingTransaction transaction);
         Task DeleteLendTransaction(int transactionId);
         Task UpdateReturnTransaction(int transactionId, DateTime returnDate);
@@ -36,19 +36,23 @@ namespace LibraryManagementSystem.Service
         }
 
         // Add a new lending transaction
-        public async Task AddLendTransaction(BorrowingTransaction transaction)
+        public async Task AddLendTransaction(BorrowingTransaction transaction, List<TransactionBook> transactionBooks)
         {
+            // Validate the transaction object
             if (transaction == null)
                 throw new ArgumentNullException(nameof(transaction), "Transaction cannot be null.");
 
             if (transaction.MemberID <= 0)
                 throw new ArgumentException("Invalid Member ID.");
 
-            if (transaction.TransactionBooks == null || !transaction.TransactionBooks.Any())
+            if (transactionBooks == null || !transactionBooks.Any())
                 throw new ArgumentException("At least one book must be included in the transaction.");
 
-            // Check availability and update each book
-            foreach (var transactionBook in transaction.TransactionBooks)
+            if (transaction.DueDate <= DateTime.Now)
+                throw new ArgumentException("Due date must be a future date.");
+
+            // Validate each book and update availability
+            foreach (var transactionBook in transactionBooks)
             {
                 var book = await _context.Book.FirstOrDefaultAsync(b => b.BookID == transactionBook.BookID);
 
@@ -58,13 +62,21 @@ namespace LibraryManagementSystem.Service
                 if (!book.Availability)
                     throw new InvalidOperationException($"Book '{book.Title}' is not available for borrowing.");
 
-                // Mark book as unavailable
+                // Mark the book as unavailable
                 book.Availability = false;
+
+                // Link the transactionBook to the transaction
+                transactionBook.TransactionID = transaction.TransactionID;
+                _context.TransactionBook.Add(transactionBook);
             }
 
+            // Add the transaction
             _context.BorrowingTransaction.Add(transaction);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
         }
+
 
 
         public async Task UpdateLendTransaction(BorrowingTransaction updatedTransaction)

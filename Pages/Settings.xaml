@@ -152,7 +152,7 @@
                             <TextBlock Text="Add Genere" Foreground="White" FontSize="14" FontWeight="Bold"
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <Border.InputBindings>
-
+                                <MouseBinding Gesture="LeftClick" Command="{Binding OpenAddPopupCommand}"  />
                             </Border.InputBindings>
                         </Border>
 
@@ -173,7 +173,7 @@
                                     <!-- TextBox -->
                                     <TextBox Margin="35,0,10,0" Background="Transparent" 
                      BorderThickness="0" VerticalAlignment="Center" 
-                     FontSize="14"  />
+                     FontSize="14" Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"  />
                                 </Grid>
                             </Border>
                         </StackPanel>
@@ -190,7 +190,7 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                                <Button Content="Edit" Margin="5,0" Width="60" Command="{Binding DataContext.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                                <Button Content="Edit" Margin="5,0" Width="60" Command="{Binding DataContext.OpenEditPopupCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
                                               
                                             </StackPanel>
                                         </DataTemplate>
@@ -289,7 +289,7 @@
 
         </TabControl>
 
-        <Popup IsOpen="{Binding IsPopupOpen}" Placement="Center" StaysOpen="True" DataContext="{Binding}">
+        <Popup IsOpen="{Binding IsEditPopupOpen}" Placement="Center" StaysOpen="True" DataContext="{Binding}">
             <Border Background="White" Padding="20" CornerRadius="10" Width="400" Height="300" >
                 <Grid>
                     <!-- Close Icon -->
@@ -310,14 +310,41 @@
                         <TextBlock Text="Edit Book" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" TextAlignment="Center" />
                         <TextBox Text="{Binding SelectedGenre.GenreID}" Margin="0,5"  />
                         <TextBox Text="{Binding SelectedGenre.GenreName}" Margin="0,5"  />
-    
-
-
-
 
                         <!-- Buttons -->
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                            <Button Content="Save" Command="{Binding SaveCommand}" Margin="5,0" Style="{StaticResource PrimaryButtonStyle}"/>
+                            <Button Content="Save" Command="{Binding UpdateGenreCommand}" Margin="5,0" Style="{StaticResource PrimaryButtonStyle}"/>
+                            <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5,0" Style="{StaticResource SecondaryButtonStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Popup>
+
+        <Popup IsOpen="{Binding IsAddPopupOpen}" Placement="Center" StaysOpen="True" DataContext="{Binding}">
+            <Border Background="White" Padding="20" CornerRadius="10" Width="400" Height="300" >
+                <Grid>
+                    <!-- Close Icon -->
+                    <Button Content="✖" 
+                    Command="{Binding ClosePopupCommand}" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top" 
+                    Background="Transparent" 
+                    BorderBrush="Transparent" 
+                    Foreground="Gray"
+                    FontSize="14"
+                    Width="30" Height="30"
+                    ToolTip="Close"
+                    Margin="5,5,0,0"/>
+
+                    <!-- Main Content -->
+                    <StackPanel Margin="0,30,0,0">
+                        <TextBlock Text="Add Book" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" TextAlignment="Center" />
+                        <TextBox Text="{Binding NewGenre.GenreName}" Margin="0,5"  />
+
+                        <!-- Buttons -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                            <Button Content="Save" Command="{Binding AddGenreCommand}" IsEnabled="{Binding AddGenreCommand.CanExecute, Mode=OneWay}" Margin="5,0" Style="{StaticResource PrimaryButtonStyle}"/>
                             <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5,0" Style="{StaticResource SecondaryButtonStyle}"/>
                         </StackPanel>
                     </StackPanel>

@@ -156,7 +156,12 @@
                         <TextBox Text="{Binding SelectedBook.Title}" Margin="0,5"  />
                         <TextBox Text="{Binding SelectedBook.Author}" Margin="0,5"  />
                         <TextBox Text="{Binding SelectedBook.ISBN}" Margin="0,5"  />
-                        <TextBox Text="{Binding SelectedBook.GenreID}" Margin="0,5"  />
+                        <ComboBox 
+                        ItemsSource="{Binding Genre}" 
+                        DisplayMemberPath="GenreName" 
+                        SelectedValuePath="GenreID" 
+                        SelectedValue="{Binding SelectedBook.GenreID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Margin="0,5" />
 
                         <!-- Buttons -->
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
@@ -207,7 +212,14 @@
                             <TextBox Text="{Binding NewBook.ISBN,UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
 
                             <TextBlock Text="Genre:" FontWeight="SemiBold" Margin="0,5" />
-                            <TextBox Text="{Binding NewBook.GenreID,UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+
+                            <ComboBox 
+                            ItemsSource="{Binding Genre}" 
+                            DisplayMemberPath="GenreName" 
+                            SelectedValuePath="GenreID" 
+                            SelectedValue="{Binding NewBook.GenreID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            Margin="0,5" />
+
                         </StackPanel>
 
                         <!-- Buttons -->
