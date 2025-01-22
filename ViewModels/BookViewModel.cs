@@ -303,73 +303,7 @@ namespace LibraryManagementSystem.ViewModels
             return SelectedBook != null;
         }
 
-        protected override void Validate(string propertyName)
-        {
-            if (propertyName == "Title")
-            {
-                if (string.IsNullOrEmpty(SelectedBook?.Title))
-                {
-                    AddValidationError("Title", "Title is required.");
-                }
-                else if (SelectedBook.Title.Length > 255)
-                {
-                    AddValidationError("Title", "Title cannot exceed 255 characters.");
-                }
-                else
-                {
-                    RemoveValidationError("Title");
-                }
-            }
-            else if (propertyName == "Author")
-            {
-                if (string.IsNullOrEmpty(SelectedBook?.Author))
-                {
-                    AddValidationError("Author", "Author is required.");
-                }
-                else if (SelectedBook.Author.Length > 255)
-                {
-                    AddValidationError("Author", "Author cannot exceed 255 characters.");
-                }
-                else
-                {
-                    RemoveValidationError("Author");
-                }
-            }
-            else if (propertyName == "ISBN")
-            {
-                if (!string.IsNullOrEmpty(SelectedBook?.ISBN) && SelectedBook.ISBN.Length != 13)
-                {
-                    AddValidationError("ISBN", "ISBN must be 13 characters long.");
-                }
-                else
-                {
-                    RemoveValidationError("ISBN");
-                }
-            }
-            else if (propertyName == "GenreID")
-            {
-                if (SelectedBook?.GenreID == null) // Check if GenreID is null
-                {
-                    AddValidationError("Genre", "Genre cannot be null");
-                }
-                else
-                {
-                    RemoveValidationError("GenreID");
-                }
-            }
-
-            else if (propertyName == "Availability")
-            {
-                if (SelectedBook?.Availability == null)
-                {
-                    AddValidationError("Availability", "Availability is required.");
-                }
-                else
-                {
-                    RemoveValidationError("Availability");
-                }
-            }
-        }
+ 
 
 
     }

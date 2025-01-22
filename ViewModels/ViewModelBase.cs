@@ -24,7 +24,6 @@ namespace LibraryManagementSystem.ViewModels
             if (Equals(storage, value)) return false;
             storage = value;
             OnPropertyChanged(propertyName);
-            Validate(propertyName);
             return true;
         }
 
@@ -45,10 +44,7 @@ namespace LibraryManagementSystem.ViewModels
                 _validationErrors.Remove(propertyName);
         }
 
-        protected virtual void Validate(string propertyName)
-        {
-            // Validation logic based on property
-        }
+
 
         public bool HasValidationErrors => _validationErrors.Count > 0;
 

@@ -45,6 +45,9 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             
         </Style>
+
+ 
+
     </Page.Resources>
 
 
@@ -135,7 +138,7 @@
         </DataGrid>
 
         <Popup IsOpen="{Binding IsEditPopupOpen}" Placement="Center" StaysOpen="True" DataContext="{Binding}">
-            <Border Background="White" Padding="20" CornerRadius="10" Width="400" Height="300" >
+            <Border Background="White" Padding="20" BorderBrush="Black" BorderThickness="1" Width="400" Height="450" >
                 <Grid>
                     <!-- Close Icon -->
                     <Button Content="✖" 
@@ -153,15 +156,23 @@
                     <!-- Main Content -->
                     <StackPanel Margin="0,30,0,0">
                         <TextBlock Text="Edit Book" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" TextAlignment="Center" />
-                        <TextBox Text="{Binding SelectedBook.Title}" Margin="0,5"  />
-                        <TextBox Text="{Binding SelectedBook.Author}" Margin="0,5"  />
-                        <TextBox Text="{Binding SelectedBook.ISBN}" Margin="0,5"  />
+                        
+                        <TextBlock Text="Book Title:" FontSize="14" FontWeight="SemiBold" Margin="0,5" />
+                        <TextBox Text="{Binding SelectedBook.Title}" Margin="0,5" FontSize="16" Padding="10,5"  />
+                        
+                        <TextBlock Text="Author:" FontSize="14" FontWeight="SemiBold" Margin="0,5"  />
+                        <TextBox Text="{Binding SelectedBook.Author}" Margin="0,5" FontSize="16" Padding="10,5"  />
+                        
+                        <TextBlock Text="ISBN:" FontSize="14" FontWeight="SemiBold" Margin="0,5" />
+                        <TextBox Text="{Binding SelectedBook.ISBN}" Margin="0,5" FontSize="16" Padding="10,5"  />
+                        
+                        <TextBlock Text="Genre:" FontSize="14" FontWeight="SemiBold" Margin="0,5" />
                         <ComboBox 
                         ItemsSource="{Binding Genre}" 
                         DisplayMemberPath="GenreName" 
                         SelectedValuePath="GenreID" 
                         SelectedValue="{Binding SelectedBook.GenreID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                        Margin="0,5" />
+                        Margin="0,5" FontSize="16" Padding="10,5" />
 
                         <!-- Buttons -->
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
@@ -175,8 +186,8 @@
 
         <!-- Add Book Popup -->
         <Popup IsOpen="{Binding IsAddPopupOpen}" Placement="Center" StaysOpen="True" DataContext="{Binding}">
-            <Border Background="White" Padding="20" CornerRadius="10" Width="450" Height="Auto" 
-            BorderBrush="LightGray" BorderThickness="1">
+            <Border Background="White" Padding="20"  Width="450" Height="Auto" 
+            BorderBrush="Black" BorderThickness="1">
                 <Grid>
                     <!-- Close Icon -->
                     <Button Content="✖" 
@@ -202,14 +213,14 @@
 
                         <!-- Input Fields -->
                         <StackPanel Margin="0,10,0,0">
-                            <TextBlock Text="Book Title:" FontWeight="SemiBold" Margin="0,5" />
-                            <TextBox Text="{Binding NewBook.Title, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+                            <TextBlock Text="Book Title:" FontWeight="SemiBold" Margin="0,5" FontSize="14" />
+                            <TextBox Text="{Binding NewBook.Title, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" FontSize="16" Padding="10,5" />
 
-                            <TextBlock Text="Author:" FontWeight="SemiBold" Margin="0,5" />
-                            <TextBox Text="{Binding NewBook.Author,UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+                            <TextBlock Text="Author:" FontWeight="SemiBold" Margin="0,5" FontSize="14" />
+                            <TextBox Text="{Binding NewBook.Author,UpdateSourceTrigger=PropertyChanged}" Margin="0,5" FontSize="16" Padding="10,5"/>
 
-                            <TextBlock Text="ISBN:" FontWeight="SemiBold" Margin="0,5" />
-                            <TextBox Text="{Binding NewBook.ISBN,UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+                            <TextBlock Text="ISBN:" FontWeight="SemiBold" Margin="0,5" FontSize="14" />
+                            <TextBox Text="{Binding NewBook.ISBN,UpdateSourceTrigger=PropertyChanged}" Margin="0,5" FontSize="16" Padding="10,5"/>
 
                             <TextBlock Text="Genre:" FontWeight="SemiBold" Margin="0,5" />
 
@@ -218,14 +229,14 @@
                             DisplayMemberPath="GenreName" 
                             SelectedValuePath="GenreID" 
                             SelectedValue="{Binding NewBook.GenreID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                            Margin="0,5" />
+                            Margin="0,5" FontSize="16" Padding="10,5" />
 
                         </StackPanel>
 
                         <!-- Buttons -->
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                            <Button Content="Add Book" Command="{Binding AddBookCommand}" IsEnabled="{Binding AddBookCommand.CanExecute, Mode=OneWay}"/>
-                            <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5,0" />
+                            <Button Content="Add Book" Command="{Binding AddBookCommand}" IsEnabled="{Binding AddBookCommand.CanExecute, Mode=OneWay}" Style="{StaticResource PrimaryButtonStyle}"/>
+                            <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5,0" Style="{StaticResource SecondaryButtonStyle}" />
                         </StackPanel>
                     </StackPanel>
                 </Grid>
