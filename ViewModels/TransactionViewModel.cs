@@ -173,6 +173,7 @@ namespace LibraryManagementSystem.ViewModels
             CancelCommand = new RelayCommand(parameter => CloseAllPopups());
             ClosePopupCommand = new RelayCommand(parameter => CloseAllPopups());
             AddTransactionCommand = new RelayCommand(ExecuteAddTransaction, CanExecuteAddTransaction);
+            UpdateTransactionCommand = new RelayCommand(ExecuteUpdateTransaction, CanExecuteUpdateTransaction);
             AddBookCommand = new RelayCommand(AddSelectedBook, CanAddBook);
             DeleteBookCommand = new RelayCommand(DeleteBook, CanDeleteBook);
 
@@ -234,7 +235,7 @@ namespace LibraryManagementSystem.ViewModels
         {
             try
             {
-                var membersFromDb = await _memberService.GetAllMembers();
+                var membersFromDb = await _memberService.GetAllAvaiableMembers();
                 Member = new ObservableCollection<Member>(membersFromDb);
             }
             catch (Exception ex)
@@ -260,7 +261,7 @@ namespace LibraryManagementSystem.ViewModels
         {
             try
             {
-                var transactionFromDb = await _transactionService.GetAllLendTransactions();
+                var transactionFromDb = await _transactionService.GetUnreturnedBorrowTransactions();
                 BorrowingTransaction = new ObservableCollection<BorrowingTransaction>(transactionFromDb);
             }
             catch (Exception ex)
@@ -297,6 +298,40 @@ namespace LibraryManagementSystem.ViewModels
             }
         }
 
+        private void ExecuteUpdateTransaction(object param)
+        {
+            // Ensure SelectedTransaction is not null and ReturnDate has a value
+            if (SelectedTransaction == null || !SelectedTransaction.ReturnDate.HasValue)
+                return;
+
+            try
+            {
+                // Pass the non-nullable DateTime value to the UpdateReturnTransaction method
+                _transactionService.UpdateReturnTransaction(
+                    SelectedTransaction.TransactionID,
+                    SelectedTransaction.ReturnDate.Value // Extract the value from the nullable DateTime
+                );
+
+            }
+            catch (Exception ex)
+            {
+                // Log any errors encountered during the transaction update
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            finally
+            {
+                // Close the popup after the operation completes
+                IsEditPopupOpen = false;
+               
+            }
+        }
+
+        private bool CanExecuteUpdateTransaction(object param)
+        {
+            // Ensure SelectedTransaction exists and ReturnDate is set
+            return SelectedTransaction != null &&
+                   SelectedTransaction.ReturnDate.HasValue;
+        }
 
         private void AddSelectedBook(object parameter)
         {

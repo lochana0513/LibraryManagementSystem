@@ -11,6 +11,7 @@ namespace LibraryManagementSystem.Service
     public interface IMemberService
     {
         Task<List<Member>> GetAllMembers();
+        Task<List<Member>> GetAllAvaiableMembers();
         Task AddMember(Member member);
         Task UpdateMember(Member member);
         Task DeleteMember(int MemberID);
@@ -28,6 +29,17 @@ namespace LibraryManagementSystem.Service
         public async Task<List<Member>> GetAllMembers()
         {
             return await _context.Member.ToListAsync(); // Fetch all members asynchronously
+        }
+
+        public async Task<List<Member>> GetAllAvaiableMembers()
+        {
+            // Get all members who do not have any ongoing borrowing transactions (ReturnDate is null)
+            var availableMembers = await _context.Member
+                .Where(member => !_context.BorrowingTransaction
+                    .Any(transaction => transaction.MemberID == member.MemberID && transaction.ReturnDate == null))
+                .ToListAsync();
+
+            return availableMembers;
         }
 
         // Add a new member

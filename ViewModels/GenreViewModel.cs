@@ -31,6 +31,7 @@ namespace LibraryManagementSystem.ViewModels
             {
                 SetProperty(ref _newGenre, value);
                 ((RelayCommand)AddGenreCommand).RaiseCanExecuteChanged();
+
             }
         }
 
@@ -97,7 +98,7 @@ namespace LibraryManagementSystem.ViewModels
         public ICommand ClosePopupCommand { get; }
         public ICommand AddGenreCommand { get; }
         public ICommand UpdateGenreCommand { get; }
-        public ICommand DeleteGenreCommand { get; }
+
 
         public GenreViewModel()
         {
@@ -116,7 +117,6 @@ namespace LibraryManagementSystem.ViewModels
             ClosePopupCommand = new RelayCommand(parameter => CloseAllPopups());
             AddGenreCommand = new RelayCommand(async parameter => await AddGenre(parameter), CanExecuteAddGenre);
             UpdateGenreCommand = new RelayCommand(async parameter => await UpdateGenre(parameter), CanExecuteUpdateGenre);
-            DeleteGenreCommand = new RelayCommand(async parameter => await DeleteGenre(parameter), CanExecuteDeleteGenre);
 
             LoadGenre();
 
@@ -179,7 +179,7 @@ namespace LibraryManagementSystem.ViewModels
         // Updated AddGenre Method
         private async Task AddGenre(object param)
         {
-            if (NewGenre == null || string.IsNullOrEmpty(NewGenre.GenreName)) return;
+            if (NewGenre == null ) return;
 
             try
             {
@@ -208,8 +208,10 @@ namespace LibraryManagementSystem.ViewModels
 
         private bool CanExecuteAddGenre(object param)
         {
-            return SelectedGenre != null && !string.IsNullOrEmpty(SelectedGenre.GenreName);
+            return NewGenre != null && !string.IsNullOrEmpty(NewGenre.GenreName);
         }
+
+
 
         // Update a genre
         private async Task UpdateGenre(object param)
@@ -234,28 +236,6 @@ namespace LibraryManagementSystem.ViewModels
             return SelectedGenre != null && !string.IsNullOrEmpty(SelectedGenre.GenreName);
         }
 
-        // Delete a genre
-        private async Task DeleteGenre(object param)
-        {
-            if (SelectedGenre == null) return;
-
-            try
-            {
-                await _genreService.DeleteGenre(SelectedGenre.GenreID);
-                Genre.Remove(SelectedGenre);
-                Console.WriteLine("Genre deleted successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
-
-        // Can Delete Genre be executed
-        private bool CanExecuteDeleteGenre(object param)
-        {
-            return SelectedGenre != null;
-        }
 
 
 

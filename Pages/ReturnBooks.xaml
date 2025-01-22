@@ -4,9 +4,41 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:LibraryManagementSystem.Pages"
+      xmlns:vm="clr-namespace:LibraryManagementSystem.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ReturnBooks">
+
+    <Page.DataContext>
+        <vm:TransactionViewModel />
+    </Page.DataContext>
+
+    <Page.Resources>
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="2" BlurRadius="5" Opacity="0.3" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="#FAFAFA" />
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="#444" />
+        </Style>
+
+
+    </Page.Resources>
 
     <Grid>
         <!-- Define Columns -->
@@ -50,31 +82,118 @@
                     <!-- TextBox -->
                     <TextBox Margin="35,0,10,0" Background="Transparent" 
                   BorderThickness="0" VerticalAlignment="Center" 
-                  FontSize="14"  />
+                  FontSize="14" Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"  />
                 </Grid>
             </Border>
         </StackPanel>
 
 
-        <!-- Books Table -->
-        <DataGrid Grid.Row="2" Grid.ColumnSpan="3" AutoGenerateColumns="False" 
-               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-               Margin="10" IsReadOnly="True">
+        <DataGrid Grid.Row="2"  ItemsSource="{Binding FilteredTransaction}" Grid.ColumnSpan="3" AutoGenerateColumns="False" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" 
+              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+              Margin="10" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="TransactionID"  Width="*"/>
-                <DataGridTextColumn Header="MemberID"  Width="*"/>
-                <DataGridTextColumn Header="BorrowDate"  Width="*"/>
-                <DataGridTextColumn Header="DueDate"  Width="*"/>
+                <DataGridTextColumn Header="TransactionID" Binding="{Binding TransactionID}"  Width="*"/>
+                <DataGridTextColumn Header="MemberID" Binding="{Binding Member.Name}"  Width="*"/>
+                <DataGridTextColumn Header="BorrowDate" Binding="{Binding BorrowDate}"  Width="*"/>
+                <DataGridTextColumn Header="DueDate" Binding="{Binding DueDate}"  Width="*"/>
                 <DataGridTemplateColumn Header="Actions" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Content="Return" Margin="5,0" Width="60" />
+                                <Button Content="Return" Command="{Binding DataContext.OpenEditPopupCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"  Margin="5,0" Width="60" />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Popup IsOpen="{Binding IsEditPopupOpen}" Placement="Center" StaysOpen="True" DataContext="{Binding}">
+            <Border Background="#FFF" Padding="20" CornerRadius="12" Width="450" Height="Auto"
+           BorderBrush="#E0E0E0" BorderThickness="1">
+                <Grid>
+                    <!-- Close Icon -->
+                    <Button Content="✖"
+                   Command="{Binding ClosePopupCommand}"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Background="Transparent"
+                   BorderBrush="Transparent"
+                   Foreground="#666"
+                   FontSize="16"
+                   Width="30" Height="30"
+                   ToolTip="Close"
+                   Margin="5,5,0,0" />
+
+                    <!-- Popup Content -->
+                    <StackPanel Margin="0,30,0,0">
+                        <TextBlock Text="Edit Transaction" FontWeight="SemiBold" FontSize="20" Margin="0,0,0,10" 
+                          Foreground="#333" TextAlignment="Center" />
+
+                        <!-- Transaction ID -->
+                        <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                            <TextBlock Text="Transaction ID:" FontWeight="Bold" Foreground="#444" />
+                            <TextBox Text="{Binding SelectedTransaction.TransactionID}" IsReadOnly="True"
+                            Style="{StaticResource ModernTextBox}" />
+                        </StackPanel>
+
+                        <!-- Member Name -->
+                        <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                            <TextBlock Text="Member Name:" FontWeight="Bold" Foreground="#444" />
+                            <TextBox Text="{Binding SelectedTransaction.Member.Name}" IsReadOnly="True"
+                            Style="{StaticResource ModernTextBox}" />
+                        </StackPanel>
+
+                        <!-- Borrow Date -->
+                        <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                            <TextBlock Text="Borrow Date:" FontWeight="Bold" Foreground="#444" />
+                            <TextBox Text="{Binding SelectedTransaction.BorrowDate, StringFormat='{}{0:yyyy-MM-dd}'}" IsReadOnly="True"
+                            Style="{StaticResource ModernTextBox}" />
+                        </StackPanel>
+
+                        <!-- Due Date -->
+                        <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                            <TextBlock Text="Due Date:" FontWeight="Bold" Foreground="#444" />
+                            <TextBox Text="{Binding SelectedTransaction.DueDate, StringFormat='{}{0:yyyy-MM-dd}'}" IsReadOnly="True"
+                            Style="{StaticResource ModernTextBox}" />
+                        </StackPanel>
+
+                        <DatePicker 
+                       SelectedDate="{Binding SelectedTransaction.ReturnDate, Mode=TwoWay}" 
+                       IsTodayHighlighted="True"
+                        />
+
+
+                        <!-- Books Section -->
+                        <TextBlock Text="Books:" FontWeight="SemiBold" Margin="0,20,0,5" Foreground="#444" />
+                        <ListBox ItemsSource="{Binding SelectedTransaction.TransactionBooks}" Margin="0,5"
+                        BorderBrush="#E0E0E0" BorderThickness="1" >
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Margin="5">
+                                        <TextBlock Text="{Binding Book.Title}" FontWeight="Bold" Foreground="#222" />
+                                        <TextBlock Text="{Binding Book.Author}" FontStyle="Italic" Foreground="#666" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <!-- Buttons -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                            <Button Content="Save"
+                           Margin="5,0"
+                           Command="{Binding UpdateTransactionCommand}" 
+                           Style="{StaticResource ModernButton}" />
+                            <Button Content="Cancel"
+                           Margin="5,0"
+                           Command="{Binding CancelCommand}"
+                            />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Popup>
+        
+        
     </Grid>
 </Page>

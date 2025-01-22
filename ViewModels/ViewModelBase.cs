@@ -52,5 +52,7 @@ namespace LibraryManagementSystem.ViewModels
 
         public bool HasValidationErrors => _validationErrors.Count > 0;
 
+
+
     }
 }

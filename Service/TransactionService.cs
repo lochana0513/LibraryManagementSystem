@@ -11,9 +11,9 @@ namespace LibraryManagementSystem.Service
     public interface ITransactionService
     {
         Task<List<BorrowingTransaction>> GetAllLendTransactions();
+        Task<List<BorrowingTransaction>> GetUnreturnedBorrowTransactions();
         Task AddLendTransaction(BorrowingTransaction transaction, List<TransactionBook> transactionBooks);
-        Task UpdateLendTransaction(BorrowingTransaction transaction);
-        Task DeleteLendTransaction(int transactionId);
+
         Task UpdateReturnTransaction(int transactionId, DateTime returnDate);
     }
     public class TransactionService : ITransactionService   
@@ -29,6 +29,16 @@ namespace LibraryManagementSystem.Service
         public async Task<List<BorrowingTransaction>> GetAllLendTransactions()
         {
             return await _context.BorrowingTransaction
+                .Include(t => t.TransactionBooks)
+                .ThenInclude(tb => tb.Book)
+                .Include(t => t.Member)
+                .ToListAsync();
+        }
+
+        public async Task<List<BorrowingTransaction>> GetUnreturnedBorrowTransactions()
+        {
+            return await _context.BorrowingTransaction
+                .Where(t => t.ReturnDate == null) // Filter for unreturned books
                 .Include(t => t.TransactionBooks)
                 .ThenInclude(tb => tb.Book)
                 .Include(t => t.Member)
@@ -79,83 +89,6 @@ namespace LibraryManagementSystem.Service
 
 
 
-        public async Task UpdateLendTransaction(BorrowingTransaction updatedTransaction)
-        {
-            if (updatedTransaction == null)
-                throw new ArgumentNullException(nameof(updatedTransaction), "Transaction cannot be null.");
-
-            // Find the existing transaction
-            var existingTransaction = await _context.BorrowingTransaction
-                .Include(t => t.TransactionBooks)
-                .FirstOrDefaultAsync(t => t.TransactionID == updatedTransaction.TransactionID);
-
-            if (existingTransaction == null)
-                throw new InvalidOperationException("Transaction not found.");
-
-            // Get the current list of books in the transaction
-            var existingBookIds = existingTransaction.TransactionBooks.Select(tb => tb.BookID).ToList();
-            var updatedBookIds = updatedTransaction.TransactionBooks.Select(tb => tb.BookID).ToList();
-
-            // Books to remove (set availability to true)
-            var removedBookIds = existingBookIds.Except(updatedBookIds).ToList();
-            foreach (var bookId in removedBookIds)
-            {
-                var book = await _context.Book.FirstOrDefaultAsync(b => b.BookID == bookId);
-                if (book != null)
-                {
-                    book.Availability = true;
-                }
-            }
-
-            // Books to add (set availability to false)
-            var addedBookIds = updatedBookIds.Except(existingBookIds).ToList();
-            foreach (var bookId in addedBookIds)
-            {
-                var book = await _context.Book.FirstOrDefaultAsync(b => b.BookID == bookId);
-                if (book == null)
-                    throw new InvalidOperationException($"Book with ID {bookId} does not exist.");
-
-                if (!book.Availability)
-                    throw new InvalidOperationException($"Book '{book.Title}' is not available for borrowing.");
-
-                book.Availability = false;
-            }
-
-            // Update the transaction details
-            existingTransaction.BorrowDate = updatedTransaction.BorrowDate;
-            existingTransaction.DueDate = updatedTransaction.DueDate;
-            existingTransaction.TransactionBooks = updatedTransaction.TransactionBooks;
-
-            await _context.SaveChangesAsync();
-        }
-
-        // Delete an existing lending transaction
-        public async Task DeleteLendTransaction(int transactionId)
-        {
-            // Find the existing transaction
-            var transaction = await _context.BorrowingTransaction
-                .Include(t => t.TransactionBooks)
-                .FirstOrDefaultAsync(t => t.TransactionID == transactionId);
-
-            if (transaction == null)
-                throw new InvalidOperationException("Transaction not found.");
-
-            // Set all books in the transaction as available
-            foreach (var transactionBook in transaction.TransactionBooks)
-            {
-                var book = await _context.Book.FirstOrDefaultAsync(b => b.BookID == transactionBook.BookID);
-                if (book != null)
-                {
-                    book.Availability = true;
-                }
-            }
-
-            // Remove the transaction
-            _context.BorrowingTransaction.Remove(transaction);
-            await _context.SaveChangesAsync();
-        }
-
-
         // Update a return transaction
         public async Task UpdateReturnTransaction(int transactionId, DateTime returnDate)
         {
@@ -182,6 +115,7 @@ namespace LibraryManagementSystem.Service
 
             await _context.SaveChangesAsync();
         }
+
 
     }
 }

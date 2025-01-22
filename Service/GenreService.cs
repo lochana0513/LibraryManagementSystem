@@ -13,7 +13,6 @@ namespace LibraryManagementSystem.Service
         Task<List<Genre>> GetAllGenre();
         Task AddGenre(Genre genre);
         Task UpdateGenre(Genre genre);
-        Task DeleteGenre(int GenreID);
     }
     public class GenreService : IGenreService
     {
@@ -59,16 +58,6 @@ namespace LibraryManagementSystem.Service
             }
         }
 
-        // Delete a genre
-        public async Task DeleteGenre(int GenreID)
-        {
-            var genre = await _context.Genre.FirstOrDefaultAsync(g => g.GenreID == GenreID);
-            if (genre != null)
-            {
-                _context.Genre.Remove(genre);
-                await _context.SaveChangesAsync();  
-            }
-        }
 
     }
 }

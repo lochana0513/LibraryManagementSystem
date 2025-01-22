@@ -25,11 +25,11 @@ namespace LibraryManagementSystem.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure composite primary key for TransactionBook
+            
             modelBuilder.Entity<TransactionBook>()
                 .HasKey(tb => new { tb.TransactionID, tb.BookID });
 
-            // Additional configurations (if any) for other entities can go here
+            
 
             base.OnModelCreating(modelBuilder);
         }

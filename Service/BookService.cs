@@ -12,7 +12,6 @@ namespace LibraryManagementSystem.Service
     public interface IBookService
     {
         Task<List<Book>> GetAllBooks();
-
         Task<List<Book>> GetAllAvailableBooks();
         Task AddBook(Book book);
         Task UpdateBook(Book book);
