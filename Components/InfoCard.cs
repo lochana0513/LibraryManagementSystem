@@ -19,7 +19,7 @@ namespace LibraryManagementSystem.Components
     public class InfoCard : Control
 
     {
-        // Define Dependency Properties for Title, Subtitle, and Image Source
+       
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(string), typeof(InfoCard), new PropertyMetadata(string.Empty));
 
@@ -32,7 +32,7 @@ namespace LibraryManagementSystem.Components
         public static readonly DependencyProperty BackgroundCustomProperty =
         DependencyProperty.Register("BackgroundCustom", typeof(Brush), typeof(InfoCard), new PropertyMetadata(Brushes.Transparent));
 
-        // CLR Properties
+      
         public string Title
         {
             get => (string)GetValue(TitleProperty);
@@ -53,7 +53,7 @@ namespace LibraryManagementSystem.Components
         }
 
 
-        // Property wrapper for BackgroundColor
+      
         public string BackgroundCustom
         {
             get => (string)GetValue(BackgroundCustomProperty);

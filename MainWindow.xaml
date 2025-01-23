@@ -11,23 +11,23 @@
 
     <Border CornerRadius="25" Padding="20" Background="#f7f6f4" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
         <Grid>
-            <!-- Define Columns -->
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="240"/>
-                <!-- Fixed-width for the menu -->
+                
                 <ColumnDefinition Width="*"/>
-                <!-- Flexible width for main content -->
+                
             </Grid.ColumnDefinitions>
 
-            <!-- Define Rows -->
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
-                <!-- Fixed height for the header -->
+               
                 <RowDefinition Height="*"/>
-                <!-- Flexible height for the main content -->
+                
             </Grid.RowDefinitions>
 
-            <!-- Menu (Left Side) -->
+           
             <Border Grid.Column="0" Grid.RowSpan="2" CornerRadius="10">
                 <Border.Background>
                     <LinearGradientBrush>
@@ -40,7 +40,7 @@
                 
 
                 <!-- ListBox for NavButton items -->
-                <ListBox x:Name="sidebar" SelectionMode="Single" SelectionChanged="sidebar_SelectionChanged" Margin="10,50,10,50" BorderThickness="0" Background="Transparent">
+                <ListBox x:Name="sidebar" SelectionMode="Single" SelectionChanged="sidebar_SelectionChanged" Margin="10,50,10,50" BorderThickness="0" Background="Transparent" >
                     <!-- Example NavButton entries -->
                     <com:NavButton Margin="3" Padding="16" Icon="M490.134,185.472L338.966,34.304c-45.855-45.737-120.076-45.737-165.931,0L21.867,185.472   C7.819,199.445-0.055,218.457,0,238.272v221.397C0.047,488.568,23.475,511.976,52.374,512h407.253   c28.899-0.023,52.326-23.432,52.373-52.331V238.272C512.056,218.457,504.182,199.445,490.134,185.472z M448,448H341.334v-67.883   c0-44.984-36.467-81.451-81.451-81.451c0,0,0,0,0,0h-7.765c-44.984,0-81.451,36.467-81.451,81.451l0,0V448H64V238.272   c0.007-2.829,1.125-5.541,3.115-7.552L218.283,79.552c20.825-20.831,54.594-20.835,75.425-0.01c0.003,0.003,0.007,0.007,0.01,0.01   L444.886,230.72c1.989,2.011,3.108,4.723,3.115,7.552V448z" Navitem="Home" Navlink="Pages/DashBoard.xaml"/>
                     <com:NavButton Margin="3" Padding="16" Icon="M17,12.663v-1.663h-3.5c-1.972-.034-1.971-2.966,0-3h3.5v-1.663c0-.891,1.077-1.337,1.707-.707l3.163,3.163c.391,.391,.391,1.024,0,1.414l-3.163,3.163c-.63,.63-1.707,.184-1.707-.707Zm6,3.837v2c0,3.038-2.462,5.5-5.5,5.5H5.5c-2.378,0-4.341-1.859-4.5-4.197V5.5C1,2.462,3.462,0,6.5,0h11c1.966,0,3.783,1.052,4.765,2.753,.361,.625,.277,1.455-.266,1.93-.756,.661-1.883,.422-2.327-.423-.435-.828-1.38-1.26-2.316-1.26h-7.356V15h11.5c.828,0,1.5,.672,1.5,1.5ZM4,5.5V15.276c.471-.168,.971-.276,1.5-.276h1.5V3h-.5c-1.381,0-2.5,1.119-2.5,2.5Zm16,12.5H5.5c-1.972,.035-1.97,2.965,0,3h12c1.379,0,2.5-1.122,2.5-2.5v-.5Z" Navitem="Lend Books" Navlink="Pages/LendBooks.xaml"/>
@@ -62,34 +62,34 @@
                     </LinearGradientBrush>
                 </Border.Background>
 
-                <!-- Nested Grid to Partition the Header -->
+        
                 <Grid>
-                    <!-- Define 4 Columns -->
+                   
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60" />
-                        <!-- Block 1: User Image -->
+                       
                         <ColumnDefinition Width="2*" />
-                        <!-- Block 2: Name & Type -->
+                       
                         <ColumnDefinition Width="*" />
-                        <!-- Block 3: Empty -->
+                       
                         <ColumnDefinition Width="150" />
-                        <!-- Block 4: Sign Out Button -->
+                      
                     </Grid.ColumnDefinitions>
 
-                    <!-- Block 1: User Image -->
+                   
                     <Image Grid.Column="0" Source="E:\LibraryManagementSystem\Assets\Screenshot 2024-11-15 183330.png" Width="50" Height="50" 
                     HorizontalAlignment="Center" VerticalAlignment="Center" 
                     Stretch="UniformToFill" ClipToBounds="True" >
                         
                     </Image>
 
-                    <!-- Block 2: User Name and Type -->
+                   
                     <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10 0 0 0" >
                         <TextBlock Text="Hello, John Doe" FontSize="16" FontWeight="Bold" Foreground="Black" />
                         <TextBlock Text="Admin" FontSize="12" Foreground="black" />
                     </StackPanel>
 
-                    <!-- Block 4: Sign Out Button 
+                    <!--Sign Out Button 
                     <Border Grid.Column="3" Width="100" Height="40" Margin="10"
                         HorizontalAlignment="Right" VerticalAlignment="Center"
                         Background="#ff5733" CornerRadius="10" BorderBrush="White" BorderThickness="1">
@@ -113,7 +113,7 @@
                     </LinearGradientBrush>
                 </Border.Background>
                 <Frame x:Name="navframe" NavigationUIVisibility="Hidden" Padding="10">
-                    <!-- Frame content goes here -->
+                    <!-- Frame content -->
                 </Frame>
             </Border>
         </Grid>

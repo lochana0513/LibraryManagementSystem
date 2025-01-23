@@ -10,11 +10,11 @@ namespace LibraryManagementSystem.Models
     public class Genre
     {
         [Key]
-        public int GenreID { get; set; }  // Primary Key
+        public int GenreID { get; set; }  
 
         [Required]
         [MaxLength(255)]
-        public string GenreName { get; set; }  // Genre name (unique)
+        public string GenreName { get; set; }  
 
         public ICollection<Book> Book{ get; set; }
     }

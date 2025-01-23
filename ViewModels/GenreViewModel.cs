@@ -48,7 +48,7 @@ namespace LibraryManagementSystem.ViewModels
             {
                 if (SetProperty(ref _genre, value))
                 {
-                    // Refresh the filtered view when books collection changes
+                   
                     InitializeFilteredGenre();
                 }
             }
@@ -102,7 +102,7 @@ namespace LibraryManagementSystem.ViewModels
 
         public GenreViewModel()
         {
-            // Initialize default values or set up services here
+            
             Genre = new ObservableCollection<Genre>();
         }
         public GenreViewModel(IGenreService genreService)
@@ -125,7 +125,7 @@ namespace LibraryManagementSystem.ViewModels
 
         private void OpenAddPopup()
         {
-            NewGenre = new Genre(); // Initialize a new book
+            NewGenre = new Genre(); 
             IsAddPopupOpen = true;
         }
 
@@ -176,7 +176,7 @@ namespace LibraryManagementSystem.ViewModels
             return false;
         }
 
-        // Updated AddGenre Method
+       
         private async Task AddGenre(object param)
         {
             if (NewGenre == null ) return;
@@ -213,7 +213,7 @@ namespace LibraryManagementSystem.ViewModels
 
 
 
-        // Update a genre
+
         private async Task UpdateGenre(object param)
         {
             if (SelectedGenre == null) return;
@@ -230,7 +230,7 @@ namespace LibraryManagementSystem.ViewModels
             IsEditPopupOpen = false;  
         }
 
-        // Can Update Genre be executed
+       
         private bool CanExecuteUpdateGenre(object param)
         {
             return SelectedGenre != null && !string.IsNullOrEmpty(SelectedGenre.GenreName);

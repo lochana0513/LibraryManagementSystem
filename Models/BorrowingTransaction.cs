@@ -10,19 +10,19 @@ namespace LibraryManagementSystem.Models
     public class BorrowingTransaction
     {
         [Key]
-        public int TransactionID { get; set; }  // Primary Key
+        public int TransactionID { get; set; }  
         public ICollection<TransactionBook> TransactionBooks { get; set; }
 
         [Required]
-        public int MemberID { get; set; }  // Foreign Key to Member table
-        public Member Member { get; set; }  // Navigation property
+        public int MemberID { get; set; }  
+        public Member Member { get; set; }  
 
         [Required]
-        public DateTime BorrowDate { get; set; }  // Date when the book was borrowed
+        public DateTime BorrowDate { get; set; }  
 
         [Required]
-        public DateTime DueDate { get; set; }  // Expected return date
+        public DateTime DueDate { get; set; } 
 
-        public DateTime? ReturnDate { get; set; }  // Actual return date (nullable)
+        public DateTime? ReturnDate { get; set; }  
     }
 }

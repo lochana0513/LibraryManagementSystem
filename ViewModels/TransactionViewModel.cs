@@ -51,11 +51,11 @@ namespace LibraryManagementSystem.ViewModels
             {
                 SetProperty(ref _newTransaction, value);
 
-                // Initialize default BorrowDate and DueDate
+                //  BorrowDate and DueDate
                 if (_newTransaction != null)
                 {
                     _newTransaction.BorrowDate = DateTime.Now;
-                    _newTransaction.DueDate = DateTime.Now.AddDays(14); // Default to 2 weeks from now
+                    _newTransaction.DueDate = DateTime.Now.AddDays(14); // Default to 2 weeks 
                 }
 
                 ((RelayCommand)AddTransactionCommand).RaiseCanExecuteChanged();
@@ -219,13 +219,13 @@ namespace LibraryManagementSystem.ViewModels
         {
             if (obj is BorrowingTransaction borrowingTransaction)
             {
-                // Check if SearchTerm is an integer and matches MemberID
+                // Check if SearchTerm 
                 if (int.TryParse(SearchTerm, out int searchMemberID))
                 {
                     return borrowingTransaction.MemberID == searchMemberID;
                 }
 
-                // Otherwise, check if the SearchTerm matches other string properties
+                // check if the SearchTerm matches other string properties
                 return borrowingTransaction.MemberID.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase);
             }
             return false;
@@ -294,33 +294,33 @@ namespace LibraryManagementSystem.ViewModels
             }
             catch (Exception ex)
             {
-                // Handle errors (e.g., log or display a message)
+                
             }
         }
 
         private void ExecuteUpdateTransaction(object param)
         {
-            // Ensure SelectedTransaction is not null and ReturnDate has a value
+            
             if (SelectedTransaction == null || !SelectedTransaction.ReturnDate.HasValue)
                 return;
 
             try
             {
-                // Pass the non-nullable DateTime value to the UpdateReturnTransaction method
+                
                 _transactionService.UpdateReturnTransaction(
                     SelectedTransaction.TransactionID,
-                    SelectedTransaction.ReturnDate.Value // Extract the value from the nullable DateTime
+                    SelectedTransaction.ReturnDate.Value 
                 );
 
             }
             catch (Exception ex)
             {
-                // Log any errors encountered during the transaction update
+                
                 Console.WriteLine($"Error: {ex.Message}");
             }
             finally
             {
-                // Close the popup after the operation completes
+                
                 IsEditPopupOpen = false;
                
             }
@@ -328,7 +328,7 @@ namespace LibraryManagementSystem.ViewModels
 
         private bool CanExecuteUpdateTransaction(object param)
         {
-            // Ensure SelectedTransaction exists and ReturnDate is set
+            
             return SelectedTransaction != null &&
                    SelectedTransaction.ReturnDate.HasValue;
         }

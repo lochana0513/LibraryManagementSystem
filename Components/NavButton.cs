@@ -29,7 +29,7 @@ namespace LibraryManagementSystem.Components
             set { SetValue(NavlinkProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Navlink.  This enables animation, styling, binding, etc...
+      
         public static readonly DependencyProperty NavlinkProperty =
             DependencyProperty.Register("Navlink", typeof(Uri), typeof(NavButton), new PropertyMetadata(null));
 
@@ -41,7 +41,7 @@ namespace LibraryManagementSystem.Components
             set { SetValue(IconProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Icon.  This enables animation, styling, binding, etc...
+       
         public static readonly DependencyProperty IconProperty =
             DependencyProperty.Register("Icon", typeof(Geometry), typeof(NavButton), new PropertyMetadata(null));
 
@@ -51,7 +51,7 @@ namespace LibraryManagementSystem.Components
             set { SetValue(NavitemProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Navitem. This enables animation, styling, binding, etc...
+      
         public static readonly DependencyProperty NavitemProperty =
             DependencyProperty.Register("Navitem", typeof(string), typeof(NavButton), new PropertyMetadata(null));
 

@@ -10,19 +10,18 @@
       Title="DashBoard">
 
     <Grid>
-        <!-- Define Columns -->
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Define Rows -->
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="120"/>
-            <!-- Row for Insight Cards -->
+
             <RowDefinition Height="*"/>
-            <!-- Row for Charts -->
         </Grid.RowDefinitions>
 
         <!-- Insight Cards -->

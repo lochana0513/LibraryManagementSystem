@@ -10,17 +10,16 @@ namespace LibraryManagementSystem.Models
     public class Member
     {
         [Key]
-        public int MemberID { get; set; }  // Primary Key
+        public int MemberID { get; set; }  
 
         [Required]
         [MaxLength(255)]
-        public string Name { get; set; }  // Full name of the member
-
+        public string Name { get; set; }  
         [Required]
         [MaxLength(255)]
-        public string ContactInfo { get; set; }  // Contact info (phone number or email)
+        public string ContactInfo { get; set; }  
 
         [Required]
-        public DateTime MembershipDate { get; set; }  // Date when membership started
+        public DateTime MembershipDate { get; set; }  
     }
 }

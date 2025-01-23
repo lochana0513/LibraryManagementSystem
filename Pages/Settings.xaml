@@ -17,7 +17,7 @@
 
     <Page.Resources>
         <Style x:Key="TabItemStyle" TargetType="TabItem">
-            <!-- Default Appearance -->
+         
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -34,7 +34,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
                         <Grid SnapsToDevicePixels="True">
-                            <!-- TabItem Background -->
+                            
                             <Border 
                         CornerRadius="5"
                         Background="{TemplateBinding Background}" 
@@ -51,7 +51,7 @@
                             </Border>
                         </Grid>
 
-                        <!-- Triggers for TabItem -->
+                       
                         <ControlTemplate.Triggers>
                             <!-- Hover Effect -->
                             <Trigger Property="IsMouseOver" Value="True">
@@ -124,28 +124,28 @@
             <TabItem Header="Manage Genere" Style="{DynamicResource TabItemStyle}" BorderBrush="#DDD" BorderThickness="1" >
                 <Border BorderBrush="#DDD" BorderThickness="1" CornerRadius="10" Padding="20">
                     <Grid>
-                        <!-- Define Columns -->
+                        
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Define Rows -->
+                        
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
-                            <!-- Title and Add Book Button -->
+                            
                             <RowDefinition Height="80"/>
-                            <!-- Search Bar -->
+                            
                             <RowDefinition Height="*"/>
-                            <!-- Books Table -->
+                            
                         </Grid.RowDefinitions>
 
-                        <!-- Title Section -->
+                        
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Genere Management" 
                         FontSize="24" FontWeight="Bold" VerticalAlignment="Center"
                         Margin="10,5,0,0" Foreground="Black"/>
 
-                        <!-- Add Book Button -->
+                        
                         <Border Grid.Row="0" Grid.Column="1" Width="160" Height="45" Margin="10"
                         HorizontalAlignment="Right" VerticalAlignment="Center"
                         Background="#ff5733" CornerRadius="10" BorderBrush="White" BorderThickness="1">
@@ -160,17 +160,17 @@
                         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal"
                         HorizontalAlignment="Right" VerticalAlignment="Center"
                         Margin="0,0,10,0">
-                            <!-- Modern Search Bar -->
+                          
                         <Border CornerRadius="7" BorderThickness="1" BorderBrush="Gray" 
                         Background="White" Width="320" Height="40">
                                             <Grid>
-                                    <!-- Search Icon -->
+                                   
                         <Image Source="E:\LibraryManagementSystem\Assets\magnifying-glass.png" 
                         Width="16" Height="16"
                         HorizontalAlignment="Left" Margin="10,0"
                         VerticalAlignment="Center"/>
 
-                                    <!-- TextBox -->
+                                 
                         <TextBox Margin="35,0,10,0" Background="Transparent" 
                         BorderThickness="0" VerticalAlignment="Center" 
                         FontSize="14" Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"  />
@@ -179,7 +179,7 @@
                         </StackPanel>
 
 
-                        <!-- Genre Table -->
+                       
                   <DataGrid Grid.Row="2" ItemsSource="{Binding Genre}" SelectedItem="{Binding SelectedGenre}"  Grid.ColumnSpan="3" AutoGenerateColumns="False" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Margin="10" IsReadOnly="True">
@@ -207,70 +207,70 @@
             <TabItem Header="Profile" Style="{DynamicResource TabItemStyle}" BorderBrush="#DDD" BorderThickness="1">
                 <Border BorderBrush="#DDD" BorderThickness="1" CornerRadius="10">
                     <Grid Margin="20">
-                        <!-- Define Rows and Columns -->
+                       
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <!-- Header -->
+                          
                             <RowDefinition Height="Auto"/>
-                            <!-- Content -->
+                        
                             <RowDefinition Height="Auto"/>
-                            <!-- Buttons -->
+                          
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <!-- Stretch content -->
+                           
                         </Grid.ColumnDefinitions>
 
-                        <!-- Header -->
+                       
                         <TextBlock Text="Profile Settings" FontSize="20" FontWeight="Bold"
                        HorizontalAlignment="Center" Foreground="Black"
                        Grid.Row="0" Margin="0,20,0,10"/>
 
-                        <!-- Content Section -->
+                       
                         <Grid Grid.Row="1" Margin="0,10,0,10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <!-- First Row -->
+                               
                                 <RowDefinition Height="Auto"/>
                                 
-                                <!-- Second Row -->
+                               
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
-                                <!-- Label and Input 1 -->
+                                
                                 <ColumnDefinition Width="1*"/>
-                                <!-- Label and Input 2 -->
+                                
                             </Grid.ColumnDefinitions>
 
-                            <!-- First Name -->
+                            
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
                                 <TextBlock Text="First Name" Foreground="Gray" FontSize="14"/>
                                 <TextBox Name="FirstNameTextBox" Style="{StaticResource ModernTextBoxStyle}"/>
                             </StackPanel>
 
-                            <!-- Last Name -->
+                            
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="10">
                                 <TextBlock Text="Last Name" Foreground="Gray" FontSize="14"/>
                                 <TextBox Name="LastNameTextBox" Style="{StaticResource ModernTextBoxStyle}"/>
                             </StackPanel>
 
-                            <!-- Phone Number -->
+                            
                             <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
                                 <TextBlock Text="Phone Number" Foreground="Gray" FontSize="14"/>
                                 <TextBox Name="PhoneNumberTextBox" InputScope="TelephoneNumber" Style="{StaticResource ModernTextBoxStyle}"/>
                             </StackPanel>
 
-                            <!-- User Type -->
+                            
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
                                 <TextBlock Text="NIC Number" Foreground="Gray" FontSize="14"/>
                                 <TextBox Name="NICTextBox" InputScope="TelephoneNumber" Style="{StaticResource ModernTextBoxStyle}"/>
                             </StackPanel>
                         </Grid>
 
-                        <!-- Buttons -->
+                        
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
                         Grid.Row="2" Margin="0,20,0,0">
-                            <!-- Add Book Button -->
+                           
                             <Border Grid.Row="0" Grid.Column="1" Width="160" Height="45" Margin="10"
                         HorizontalAlignment="Right" VerticalAlignment="Center"
                         Background="#ff5733" CornerRadius="10" BorderBrush="White" BorderThickness="1">
@@ -342,7 +342,7 @@
                         <TextBlock Text="Add Genre" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" TextAlignment="Center" />
                         <TextBox Text="{Binding NewGenre.GenreName, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" FontSize="18" Padding="10,5" />
 
-                        <!-- Buttons -->
+                       
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                             <Button Content="Save" Command="{Binding AddGenreCommand}" IsEnabled="{Binding AddGenreCommand.CanExecute, Mode=OneWay}" Margin="5,0" Style="{StaticResource PrimaryButtonStyle}"/>
                             <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5,0" Style="{StaticResource SecondaryButtonStyle}"/>

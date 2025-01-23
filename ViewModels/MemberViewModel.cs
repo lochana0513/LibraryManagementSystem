@@ -96,8 +96,6 @@ namespace LibraryManagementSystem.ViewModels
 
         public MemberViewModel()
         {
-            // Initialize default values or set up services here
-            // For example, you could initialize the Books collection to an empty ObservableCollection:
             Member = new ObservableCollection<Member>();
         }
         public MemberViewModel(IMemberService memberService)
@@ -117,7 +115,7 @@ namespace LibraryManagementSystem.ViewModels
 
         private void OpenAddPopup()
         {
-            NewMember = new Member(); // Initialize a new book
+            NewMember = new Member(); 
             IsAddPopupOpen = true;
         }
 
@@ -175,7 +173,7 @@ namespace LibraryManagementSystem.ViewModels
 
             try
             {
-                // Call the service to add the member
+                
                 await _memberService.AddMember(NewMember);
                 Member.Add(NewMember);
                 Console.WriteLine("Member added successfully.");
@@ -183,22 +181,22 @@ namespace LibraryManagementSystem.ViewModels
             catch (ArgumentNullException ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-                // You could also show an error dialog or notification in the UI
+                
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine($"Validation Error: {ex.Message}");
-                // Show error message to the user (UI notification)
+                
             }
             catch (InvalidOperationException ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-                // Inform the user that the contact info is already taken
+                
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Unexpected Error: {ex.Message}");
-                // Show a generic error message to the user
+                
             }
             IsAddPopupOpen = false;
         }

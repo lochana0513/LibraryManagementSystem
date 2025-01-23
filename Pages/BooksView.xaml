@@ -52,28 +52,28 @@
 
 
     <Grid>
-        <!-- Define Columns -->
+       
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Define Rows -->
+      
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
-            <!-- Title and Add Book Button -->
+           
             <RowDefinition Height="80"/>
-            <!-- Search Bar -->
+        
             <RowDefinition Height="*"/>
-            <!-- Books Table -->
+        
         </Grid.RowDefinitions>
 
-        <!-- Title Section -->
+      
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Books Management" 
                    FontSize="24" FontWeight="Bold" VerticalAlignment="Center"
                    Margin="10,5,0,0"/>
 
-        <!-- Add Book Button -->
+      
         <Border Grid.Row="0" Grid.Column="1" Width="160" Height="45" Margin="10"
                         HorizontalAlignment="Right" VerticalAlignment="Center"
                         Background="#ff5733" CornerRadius="10" BorderBrush="White" BorderThickness="1">
@@ -88,17 +88,17 @@
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal"
             HorizontalAlignment="Right" VerticalAlignment="Center"
             Margin="0,0,10,0">
-            <!-- Modern Search Bar -->
+           
             <Border CornerRadius="7" BorderThickness="1" BorderBrush="Gray" 
             Background="White" Width="320" Height="40">
                 <Grid>
-                    <!-- Search Icon -->
+                   
                     <Image Source="E:\LibraryManagementSystem\Assets\magnifying-glass.png" 
                    Width="16" Height="16"
                    HorizontalAlignment="Left" Margin="10,0"
                    VerticalAlignment="Center"/>
 
-                    <!-- TextBox -->
+                   
                     <TextBox Margin="35,0,10,0" Background="Transparent" 
                      BorderThickness="0" VerticalAlignment="Center" 
                      FontSize="14" Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}" />
@@ -107,7 +107,7 @@
         </StackPanel>
 
 
-        <!-- Books Table -->
+  
         <DataGrid Grid.Row="2" ItemsSource="{Binding FilteredBooks}" SelectedItem="{Binding SelectedBook, Mode=TwoWay}"  Grid.ColumnSpan="2" AutoGenerateColumns="False" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Margin="10" IsReadOnly="True">
@@ -204,14 +204,14 @@
 
                     <!-- Main Content -->
                     <StackPanel Margin="10">
-                        <!-- Popup Title -->
+                        
                         <TextBlock Text="Add Book Details" 
                            FontWeight="Bold" 
                            FontSize="20" 
                            TextAlignment="Center" 
                            Margin="0,0,0,15" />
 
-                        <!-- Input Fields -->
+                       
                         <StackPanel Margin="0,10,0,0">
                             <TextBlock Text="Book Title:" FontWeight="SemiBold" Margin="0,5" FontSize="14" />
                             <TextBox Text="{Binding NewBook.Title, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" FontSize="16" Padding="10,5" />
@@ -233,7 +233,7 @@
 
                         </StackPanel>
 
-                        <!-- Buttons -->
+                      
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                             <Button Content="Add Book" Command="{Binding AddBookCommand}" IsEnabled="{Binding AddBookCommand.CanExecute, Mode=OneWay}" Style="{StaticResource PrimaryButtonStyle}"/>
                             <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5,0" Style="{StaticResource SecondaryButtonStyle}" />

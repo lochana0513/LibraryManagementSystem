@@ -9,9 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LibraryManagementSystem
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+
     public partial class App : Application
     {
         public static IServiceProvider ServiceProvider { get; private set; }
@@ -24,9 +22,9 @@ namespace LibraryManagementSystem
             var serviceCollection = new ServiceCollection();
 
             // Register application services
-            serviceCollection.AddSingleton<IBookService, BookService>(); // Register Book Service
-            serviceCollection.AddSingleton<IMemberService, MemberService>(); // Register Member Service
-            serviceCollection.AddSingleton<IGenreService, GenreService>(); // Register Member Service
+            serviceCollection.AddSingleton<IBookService, BookService>(); 
+            serviceCollection.AddSingleton<IMemberService, MemberService>();
+            serviceCollection.AddSingleton<IGenreService, GenreService>(); 
             serviceCollection.AddSingleton<ITransactionService, TransactionService>();
 
             // Register DbContext
@@ -35,7 +33,7 @@ namespace LibraryManagementSystem
 
 
 
-            // Register ViewModels (using Transient because we want a new instance every time)
+            // Register ViewModels 
             serviceCollection.AddTransient<BookViewModel>();
             serviceCollection.AddTransient<MemberViewModel>();
             serviceCollection.AddTransient<GenreViewModel>();

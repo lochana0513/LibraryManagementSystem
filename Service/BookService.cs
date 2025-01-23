@@ -26,7 +26,7 @@ namespace LibraryManagementSystem.Service
             _context = context;
         }
 
-        // Get all books
+
         public async Task<List<Book>> GetAllBooks()
         {
             return await _context.Book.ToListAsync();
@@ -36,19 +36,18 @@ namespace LibraryManagementSystem.Service
         public async Task<List<Book>> GetAllAvailableBooks()
         {
             return await _context.Book
-                .Where(b => b.Availability) // Filter books that are available
+                .Where(b => b.Availability) 
                 .ToListAsync();
         }
 
 
-        // Add a new book
+
         public async Task AddBook(Book book)
         {
-            // Validation: Ensure the book is not null
+
             if (book == null)
                 throw new ArgumentNullException(nameof(book), "Book cannot be null.");
 
-            // Validation: Check required fields
             if (string.IsNullOrWhiteSpace(book.Title))
                 throw new ArgumentException("Book title is required.");
 
@@ -58,18 +57,18 @@ namespace LibraryManagementSystem.Service
             if (string.IsNullOrWhiteSpace(book.ISBN))
                 throw new ArgumentException("Book ISBN is required.");
 
-            // Optional: Check if the book already exists in the database (e.g., by ISBN)
             var existingBook = await _context.Book.FirstOrDefaultAsync(b => b.ISBN == book.ISBN);
             if (existingBook != null)
                 throw new InvalidOperationException("A book with the same ISBN already exists.");
 
-            // If all validations pass, add the book to the database
+          
+            book.Availability = true;
             _context.Book.Add(book);
-            await _context.SaveChangesAsync();  // Save changes asynchronously
+            await _context.SaveChangesAsync();  
         }
 
 
-        // Update an existing book
+
         public async Task UpdateBook(Book book)
         {
             var existingBook = await _context.Book.FirstOrDefaultAsync(b => b.BookID == book.BookID);
@@ -80,18 +79,18 @@ namespace LibraryManagementSystem.Service
                 existingBook.ISBN = book.ISBN;
                 existingBook.Genre = book.Genre;
 
-                await _context.SaveChangesAsync();  // Asynchronous save
+                await _context.SaveChangesAsync();  
             }
         }
 
-        // Delete a book
+
         public async Task DeleteBook(int BookID)
         {
             var book = await _context.Book.FirstOrDefaultAsync(b => b.BookID == BookID);
             if (book != null)
             {
                 _context.Book.Remove(book);
-                await _context.SaveChangesAsync();  // Asynchronous remove and save
+                await _context.SaveChangesAsync();  
             }
         }
     }

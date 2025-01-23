@@ -10,29 +10,29 @@ namespace LibraryManagementSystem.Models
     public class User
     {
         [Key]
-        public int UserID { get; set; }  // Primary Key
+        public int UserID { get; set; }  
 
         [Required]
         [MaxLength(255)]
         [EmailAddress]
-        public string Email { get; set; }  // Email (unique)
+        public string Email { get; set; }  
 
         [Required]
         [MaxLength(255)]
-        public string Password { get; set; }  // Password (hashed)
+        public string Password { get; set; }  
 
         [Required]
         [MaxLength(255)]
-        public string FirstName { get; set; }  // User's first name
+        public string FirstName { get; set; }  
 
         [Required]
         [MaxLength(255)]
-        public string LastName { get; set; }  // User's last name
+        public string LastName { get; set; }  
 
         [MaxLength(20)]
-        public string PhoneNumber { get; set; }  // Optional phone number
+        public string PhoneNumber { get; set; }  
 
         [MaxLength(20)]
-        public string NICNumber { get; set; }  // Optional NIC number
+        public string NICNumber { get; set; } 
     }
 }

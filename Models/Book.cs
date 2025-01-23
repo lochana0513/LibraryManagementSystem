@@ -10,25 +10,24 @@ namespace LibraryManagementSystem.Models
     public class Book
     {
         [Key]
-        public int BookID { get; set; }  // Primary Key
+        public int BookID { get; set; } 
         public ICollection<TransactionBook> TransactionBooks { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string Title { get; set; }  // Title of the book
+        public string Title { get; set; }  
 
         [Required]
         [MaxLength(255)]
-        public string Author { get; set; }  // Author's name
-
+        public string Author { get; set; }  
         [MaxLength(13)]
-        public string ISBN { get; set; }  // ISBN of the book (optional)
+        public string ISBN { get; set; }  
 
         [Required]
-        public int GenreID { get; set; }  // Foreign Key to Genre table
-        public Genre Genre { get; set; }  // Navigation property
+        public int GenreID { get; set; }  
+        public Genre Genre { get; set; } 
 
         [Required]
-        public bool Availability { get; set; }  // Whether the book is available for borrowing
+        public bool Availability { get; set; } 
     }
 }

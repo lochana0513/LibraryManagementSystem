@@ -23,13 +23,11 @@ namespace LibraryManagementSystem.Service
             _context = context;
         }
 
-        // Get all genres
         public async Task<List<Genre>> GetAllGenre()
         {
             return await _context.Genre.ToListAsync();
         }
 
-        // Add a new genre
         public async Task AddGenre(Genre genre)
         {
             if (genre == null)
@@ -46,7 +44,6 @@ namespace LibraryManagementSystem.Service
             await _context.SaveChangesAsync();  
         }
 
-        // Update an existing genre
         public async Task UpdateGenre(Genre genre)
         {
             var existingGenre = await _context.Genre.FirstOrDefaultAsync(g => g.GenreID == genre.GenreID);

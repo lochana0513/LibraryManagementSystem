@@ -46,7 +46,7 @@ namespace LibraryManagementSystem.ViewModels
             {
                 if (SetProperty(ref _books, value))
                 {
-                    // Refresh the filtered view when books collection changes
+                   
                     InitializeFilteredBooks();
                 }
             }
@@ -121,8 +121,7 @@ namespace LibraryManagementSystem.ViewModels
 
         public BookViewModel()
         {
-            // Initialize default values or set up services here
-            // For example, you could initialize the Books collection to an empty ObservableCollection:
+
             Book = new ObservableCollection<Book>();
             Genre = new ObservableCollection<Genre>();
 
@@ -146,7 +145,7 @@ namespace LibraryManagementSystem.ViewModels
 
         private void OpenAddPopup()
         {
-            NewBook = new Book(); // Initialize a new book
+            NewBook = new Book(); 
             LoadGenres();
             IsAddPopupOpen = true;
         }
@@ -213,39 +212,39 @@ namespace LibraryManagementSystem.ViewModels
             return false;
         }
 
-        // Add a book
+
         public async Task AddBook(object param)
         {
             if (NewBook == null) return;
 
             try
             {
-                // Call the service to add the book
+               
                 await _bookService.AddBook(NewBook);
 
-                // Add the book to the observable collection for UI updates
+                
                 Book.Add(NewBook);
-                // Set a success message               
-                Console.WriteLine("Book added successfully."); // Log the message (optional)
+                         
+                Console.WriteLine("Book added successfully.");
             }
             catch (ArgumentNullException ex)
             {
-                // Handle validation error: Null or missing data
+                
                 Console.WriteLine($"Validation Error: {ex.Message}");
             }
             catch (ArgumentException ex)
             {
-                // Handle validation error: Invalid arguments
+               
                 Console.WriteLine($"Validation Error: {ex.Message}");
             }
             catch (InvalidOperationException ex)
             {
-                // Handle validation error: Duplicate book
+                
                 Console.WriteLine($"Validation Error: {ex.Message}");
             }
             catch (Exception ex)
             {
-                // Handle other unexpected errors
+                
                 Console.WriteLine($"Error: {ex.Message}");
             }
             IsAddPopupOpen = false;
@@ -253,13 +252,13 @@ namespace LibraryManagementSystem.ViewModels
         }
 
 
-        // Can Add Book be executed
+     
         private bool CanExecuteAddBook(object param)
         {
             return NewBook != null && !string.IsNullOrEmpty(NewBook.Title);
         }
 
-        // Update a book
+
         public async Task UpdateBook(object param)
         {
             if (SelectedBook == null) return;
@@ -275,13 +274,13 @@ namespace LibraryManagementSystem.ViewModels
             IsEditPopupOpen = false;
         }
 
-        // Can Update Book be executed
+
         private bool CanExecuteUpdateBook(object param)
         {
             return SelectedBook != null && !string.IsNullOrEmpty(SelectedBook.Title);
         }
 
-        // Delete a book
+
         public async Task DeleteBook(object param)
         {
             if (SelectedBook == null) return;
@@ -297,7 +296,7 @@ namespace LibraryManagementSystem.ViewModels
             }
         }
 
-        // Can Delete Book be executed
+
         private bool CanExecuteDeleteBook(object param)
         {
             return SelectedBook != null;
